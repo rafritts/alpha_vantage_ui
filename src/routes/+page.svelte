@@ -4,8 +4,8 @@
 
 <div class="container mx-auto px-4 py-8">
   <div class="text-center mb-12">
-    <h1 class="text-4xl font-bold mb-2">Alpha Vantage API Showcase</h1>
-    <p class="text-lg text-gray-500">A collection of powerful financial data APIs.</p>
+    <h1 class="text-4xl font-bold mb-2">Alpha Vantage API Data Viewer</h1>
+    <p class="text-lg text-gray-500">Click on any of the cards below to view the API data.</p>
   </div>
 
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

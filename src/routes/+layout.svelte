@@ -16,7 +16,6 @@
 				<a class="btn btn-ghost text-xl" href="/">Alpha Vantage UI</a>
 			</div>
 			<div class="flex-none flex items-center gap-2">
-				<a class="btn btn-ghost" href="/income-statement">Income Statement</a>
 				<a class="btn btn-primary" href="https://www.alphavantage.co/documentation/" target="_blank" rel="noreferrer">Docs</a>
 			</div>
 		</div>
