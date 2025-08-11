@@ -19,6 +19,12 @@
       description="Access a company's income statements, with detailed quarterly and annual reports."
       href="/income-statement"
     />
+    <Card 
+      title="Balance Sheet"
+      description="Get a company's balance sheet, with detailed quarterly and annual reports."
+      href="/balance-sheet"
+    />
+
     <!-- Add more cards as you build out more API pages -->
   </div>
 </div>

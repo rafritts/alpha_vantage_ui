@@ -8,7 +8,7 @@
   let expandedAnnualFlags: boolean[] = [];
   let expandedQuarterlyFlags: boolean[] = [];
 
-  async function fetchIncomeStatement() {
+  async function fetchBalanceSheet() {
     error = null;
     data = null;
     // reset expanded state on new fetch
@@ -21,7 +21,7 @@
     }
     loading = true;
     try {
-      const res = await fetch(`/api/income-statement?symbol=${encodeURIComponent(s)}`);
+      const res = await fetch(`/api/balance-sheet?symbol=${encodeURIComponent(s)}`);
       const ct = res.headers.get('content-type') || '';
       const isJSON = ct.includes('application/json');
       const body = isJSON ? await res.json() : await res.text();
@@ -43,7 +43,7 @@
 
   function onSubmit(e: Event) {
     e.preventDefault();
-    fetchIncomeStatement();
+    fetchBalanceSheet();
   }
 
   function reportKeys(report: Record<string, any>) {
@@ -51,13 +51,13 @@
     const preferred = [
       'fiscalDateEnding',
       'reportedCurrency',
-      'totalRevenue',
-      'grossProfit',
-      'operatingIncome',
-      'netIncome',
-      'eps',
-      'researchAndDevelopment',
-      'operatingExpenses'
+      'totalAssets',
+      'totalLiabilities',
+      'totalShareholderEquity',
+      'cashAndCashEquivalentsAtCarryingValue',
+      'commonStock',
+      'retainedEarnings',
+      'longTermDebt'
     ];
     const keys = Object.keys(report || {});
     const others = keys.filter((k) => !preferred.includes(k));
@@ -104,7 +104,7 @@
 
 <section class="space-y-6">
   <div class="flex items-center gap-3">
-    <h1 class="text-3xl font-bold">Alpha Vantage — Income Statement</h1>
+    <h1 class="text-3xl font-bold">Alpha Vantage — Balance Sheet</h1>
     <div class="badge badge-primary">Fundamentals</div>
   </div>
 
@@ -129,7 +129,7 @@
             <span class="loading loading-spinner loading-sm"></span>
             Loading
           {:else}
-            Fetch Income Statement
+            Fetch Balance Sheet
           {/if}
         </button>
       </form>
@@ -146,7 +146,7 @@
   {#if loading && !data}
     <div class="flex items-center gap-2 text-base-content/70">
       <span class="loading loading-dots loading-md"></span>
-      Fetching income statement from Alpha Vantage…
+      Fetching balance sheet from Alpha Vantage…
     </div>
   {/if}
 

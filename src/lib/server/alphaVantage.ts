@@ -2,6 +2,8 @@ import { env } from '$env/dynamic/private';
 
 export type AVFunction =
   | 'OVERVIEW'
+  | 'INCOME_STATEMENT'
+  | 'BALANCE_SHEET'
   | string; // allow any documented function while providing some known ones
 
 export type QueryParams = Record<string, string | number | boolean | undefined | null>;
