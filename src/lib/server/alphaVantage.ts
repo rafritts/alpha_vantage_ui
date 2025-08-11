@@ -4,6 +4,7 @@ export type AVFunction =
   | 'OVERVIEW'
   | 'INCOME_STATEMENT'
   | 'BALANCE_SHEET'
+  | 'NEWS_SENTIMENT'
   | string; // allow any documented function while providing some known ones
 
 export type QueryParams = Record<string, string | number | boolean | undefined | null>;

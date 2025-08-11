@@ -25,6 +25,12 @@
       href="/balance-sheet"
     />
 
+    <Card 
+      title="News Sentiment"
+      description="Search latest news and sentiment scores for tickers and topics using Alpha Vantage's News Sentiment API."
+      href="/news-sentiment"
+    />
+
     <!-- Add more cards as you build out more API pages -->
   </div>
 </div>
