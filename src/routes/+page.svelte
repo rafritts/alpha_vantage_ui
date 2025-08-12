@@ -43,6 +43,12 @@
       href="/news-sentiment"
     />
 
+    <Card 
+      title="Earnings History"
+      description="View quarterly and annual EPS, surprises, and visualize trends over time."
+      href="/earnings-history"
+    />
+
     <!-- Add more cards as you build out more API pages -->
   </div>
 </div>
