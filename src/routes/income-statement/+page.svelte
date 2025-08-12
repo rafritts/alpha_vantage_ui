@@ -1,5 +1,6 @@
 <script lang="ts">
   import { formatValue } from '$lib/utils';
+  import { symbolStore } from '$lib/stores/symbol';
   let symbol = 'AAPL';
   let loading = false;
   let error: string | null = null;
@@ -14,7 +15,7 @@
     // reset expanded state on new fetch
     expandedAnnualFlags = [];
     expandedQuarterlyFlags = [];
-    const s = symbol.trim().toUpperCase();
+    const s = $symbolStore.trim().toUpperCase();
     if (!s) {
       error = 'Please enter a symbol';
       return;
@@ -119,7 +120,7 @@
             id="symbol"
             name="symbol"
             class="input input-bordered w-48"
-            bind:value={symbol}
+            bind:value={$symbolStore}
             placeholder="e.g. AAPL"
             autocomplete="off"
           />
@@ -153,7 +154,7 @@
   {#if data}
     <div class="card bg-base-100 shadow">
       <div class="card-body">
-        <h2 class="card-title">Results for {symbol.toUpperCase()}</h2>
+        <h2 class="card-title">Results for {$symbolStore.toUpperCase()}</h2>
 
         <div class="tabs tabs-boxed w-fit">
           <button class="tab {tab === 'annual' ? 'tab-active' : ''}" on:click={() => (tab = 'annual')}>Annual</button>

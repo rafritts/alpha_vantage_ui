@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { symbolStore } from '$lib/stores/symbol';
+  import { onMount } from 'svelte';
   let tickers = 'AAPL';
   let topics = '';
   let time_from = '';
@@ -24,6 +26,11 @@
   async function fetchNews() {
     error = null;
     data = null;
+    // If a single ticker is provided, sync it to the global symbol store
+    const single = tickers.split(',').map((t) => t.trim()).filter(Boolean);
+    if (single.length === 1) {
+      symbolStore.set(single[0].toUpperCase());
+    }
     const q = buildQuery();
     if (!q.includes('tickers=') && !q.includes('topics=')) {
       error = 'Please provide at least one of: tickers or topics';
@@ -55,6 +62,13 @@
     e.preventDefault();
     fetchNews();
   }
+
+  // Initialize tickers from the global symbol once on mount
+  onMount(() => {
+    if ($symbolStore) {
+      tickers = $symbolStore;
+    }
+  });
 </script>
 
 <section class="space-y-6">
