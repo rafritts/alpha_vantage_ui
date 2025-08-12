@@ -26,6 +26,18 @@
     />
 
     <Card 
+      title="Cash Flow"
+      description="View a company's cash flow statements, with detailed quarterly and annual reports."
+      href="/cash-flow"
+    />
+
+    <Card 
+      title="Global Quote"
+      description="Fetch latest price, change and other intraday quote metrics for a symbol."
+      href="/global-quote"
+    />
+
+    <Card 
       title="News Sentiment"
       description="Search latest news and sentiment scores for tickers and topics using Alpha Vantage's News Sentiment API."
       href="/news-sentiment"

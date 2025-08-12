@@ -2,8 +2,10 @@ import { env } from '$env/dynamic/private';
 
 export type AVFunction =
   | 'OVERVIEW'
+  | 'GLOBAL_QUOTE'
   | 'INCOME_STATEMENT'
   | 'BALANCE_SHEET'
+  | 'CASH_FLOW'
   | 'NEWS_SENTIMENT'
   | string; // allow any documented function while providing some known ones
 
