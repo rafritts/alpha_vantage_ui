@@ -1,8 +1,47 @@
 <script lang="ts">
 	import '../app.css';
 	import favicon from '$lib/assets/favicon.svg';
+	import { onMount } from 'svelte';
 
 	let { children } = $props();
+
+	type Theme = 'light' | 'dark';
+	let theme = $state<Theme>('light');
+
+	const applyTheme = (t: Theme) => {
+		// add a temporary class to animate color changes
+		document.documentElement.classList.add('theme-transition');
+		document.documentElement.setAttribute('data-theme', t);
+		setTimeout(() => {
+			document.documentElement.classList.remove('theme-transition');
+		}, 500);
+		try {
+			localStorage.setItem('theme', t);
+		} catch (e) {
+			// ignore storage errors (e.g., SSR or privacy mode)
+		}
+	};
+
+	const toggleTheme = () => {
+		theme = theme === 'light' ? 'dark' : 'light';
+		applyTheme(theme);
+	};
+
+	onMount(() => {
+		let saved: Theme | null = null;
+		try {
+			const v = localStorage.getItem('theme');
+			if (v === 'light' || v === 'dark') saved = v;
+		} catch (e) {
+			// ignore
+		}
+		if (!saved) {
+			const prefersDark = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+			saved = prefersDark ? 'dark' : 'light';
+		}
+		theme = saved;
+		applyTheme(theme);
+	});
 </script>
 
 <svelte:head>
@@ -17,6 +56,28 @@
 			</div>
 			<div class="flex-none flex items-center gap-2">
 				<a class="btn btn-primary" href="https://www.alphavantage.co/documentation/" target="_blank" rel="noreferrer">Docs</a>
+				<label class="btn btn-ghost btn-xs btn-circle swap swap-rotate focus:outline-none focus-visible:outline-none ring-0 focus:ring-0 w-8 h-8 min-h-0 p-0" aria-label="Toggle theme">
+					<input
+						type="checkbox"
+						onchange={(e) => {
+							const checked = (e.currentTarget as HTMLInputElement).checked;
+							theme = checked ? 'dark' : 'light';
+							applyTheme(theme);
+						}}
+						checked={theme === 'dark'}
+						class="sr-only outline-none focus:outline-none focus-visible:outline-none ring-0 focus:ring-0"
+						aria-label="Theme checkbox"
+					/>
+					<!-- Moon icon (shown when dark) -->
+					<svg class="swap-on h-4 w-4 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
+						<path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+					</svg>
+					<!-- Sun icon (shown when light) -->
+					<svg class="swap-off h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+						<circle cx="12" cy="12" r="5"></circle>
+						<path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path>
+					</svg>
+				</label>
 			</div>
 		</div>
 	</div>
