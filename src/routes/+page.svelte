@@ -49,6 +49,12 @@
       href="/earnings-history"
     />
 
+    <Card 
+      title="Earnings Estimates"
+      description="See analyst EPS estimates (annual and quarterly) with simple visualizations."
+      href="/earnings-estimates"
+    />
+
     <!-- Add more cards as you build out more API pages -->
   </div>
 </div>
