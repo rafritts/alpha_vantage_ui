@@ -129,6 +129,19 @@
             Fetch Cash Flow
           {/if}
         </button>
+        {#if data}
+          <div class="flex items-center gap-2 ml-auto">
+            <span class="label-text font-semibold">View:</span>
+            <div class="join">
+              <button type="button" class="btn btn-sm md:btn-md join-item" class:btn-primary={tab === 'annual'} class:btn-ghost={tab !== 'annual'} on:click={() => (tab = 'annual')}>
+                Annual
+              </button>
+              <button type="button" class="btn btn-sm md:btn-md join-item" class:btn-primary={tab === 'quarterly'} class:btn-ghost={tab !== 'quarterly'} on:click={() => (tab = 'quarterly')}>
+                Quarterly
+              </button>
+            </div>
+          </div>
+        {/if}
       </form>
 
       {#if error}
@@ -152,10 +165,7 @@
       <div class="card-body">
         <h2 class="card-title">Results for {$symbolStore.toUpperCase()}</h2>
 
-        <div class="tabs tabs-boxed w-fit">
-          <button class="tab {tab === 'annual' ? 'tab-active' : ''}" on:click={() => (tab = 'annual')}>Annual</button>
-          <button class="tab {tab === 'quarterly' ? 'tab-active' : ''}" on:click={() => (tab = 'quarterly')}>Quarterly</button>
-        </div>
+
 
         {#if tab === 'annual'}
           {#if (data as any).annualReports?.length}

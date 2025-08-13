@@ -276,10 +276,17 @@
           {/if}
         </button>
         {#if data}
-          <label class="label cursor-pointer gap-3">
-            <span class="label-text">Show annual</span>
-            <input type="checkbox" class="toggle" bind:checked={showAnnual} />
-          </label>
+          <div class="flex items-center gap-2 ml-auto">
+            <span class="label-text font-semibold">View:</span>
+            <div class="join">
+              <button type="button" class="btn btn-sm md:btn-md join-item" class:btn-primary={showAnnual} class:btn-ghost={!showAnnual} on:click={() => (showAnnual = true)}>
+                Annual
+              </button>
+              <button type="button" class="btn btn-sm md:btn-md join-item" class:btn-primary={!showAnnual} class:btn-ghost={showAnnual} on:click={() => (showAnnual = false)}>
+                Quarterly
+              </button>
+            </div>
+          </div>
         {/if}
       </form>
 
