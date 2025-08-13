@@ -27,7 +27,29 @@
 
 	<footer class="footer footer-center bg-base-100 text-base-content p-4">
 		<aside>
-			<p>Built with SvelteKit + DaisyUI</p>
+			<div class="mt-2 flex items-center justify-center gap-4">
+				<a href="https://svelte.dev" target="_blank" rel="noreferrer" class="inline-flex items-center" aria-label="Svelte">
+					<img
+						alt="Svelte logo"
+						src="https://upload.wikimedia.org/wikipedia/commons/1/1b/Svelte_Logo.svg"
+						class="h-6 w-auto opacity-80 hover:opacity-100 transition-opacity"
+					/>
+				</a>
+				<a href="https://daisyui.com" target="_blank" rel="noreferrer" class="inline-flex items-center" aria-label="daisyUI">
+					<img
+						alt="daisyUI logo"
+						src="https://img.daisyui.com/images/daisyui/mark.svg"
+						class="h-6 w-auto opacity-80 hover:opacity-100 transition-opacity"
+					/>
+				</a>
+				<a href="https://tailwindcss.com" target="_blank" rel="noreferrer" class="inline-flex items-center" aria-label="Tailwind CSS">
+					<img
+						alt="Tailwind CSS logo"
+						src="https://upload.wikimedia.org/wikipedia/commons/d/d5/Tailwind_CSS_Logo.svg"
+						class="h-6 w-auto opacity-80 hover:opacity-100 transition-opacity"
+					/>
+				</a>
+			</div>
 		</aside>
 	</footer>
 </div>
