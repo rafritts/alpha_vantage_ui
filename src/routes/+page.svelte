@@ -10,6 +10,11 @@
 
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
     <Card 
+      title="Global Quote"
+      description="Fetch latest price, change and other intraday quote metrics for a symbol."
+      href="/global-quote"
+    />
+    <Card 
       title="Company Overview"
       description="Get fundamental data for a company, including financial ratios, and market capitalization."
       href="/company-overview"
@@ -24,38 +29,26 @@
       description="Get a company's balance sheet, with detailed quarterly and annual reports."
       href="/balance-sheet"
     />
-
     <Card 
       title="Cash Flow"
       description="View a company's cash flow statements, with detailed quarterly and annual reports."
       href="/cash-flow"
     />
-
-    <Card 
-      title="Global Quote"
-      description="Fetch latest price, change and other intraday quote metrics for a symbol."
-      href="/global-quote"
-    />
-
     <Card 
       title="News Sentiment"
       description="Search latest news and sentiment scores for tickers and topics using Alpha Vantage's News Sentiment API."
       href="/news-sentiment"
     />
-
     <Card 
       title="Earnings History"
       description="View quarterly and annual EPS, surprises, and visualize trends over time."
       href="/earnings-history"
     />
-
     <Card 
       title="Earnings Estimates"
       description="See analyst EPS estimates (annual and quarterly) with simple visualizations."
       href="/earnings-estimates"
     />
-
-    <!-- Add more cards as you build out more API pages -->
   </div>
 </div>
 
