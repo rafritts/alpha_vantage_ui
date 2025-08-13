@@ -1,6 +1,7 @@
 <script lang="ts">
   import { symbolStore } from '$lib/stores/symbol';
   import { onMount } from 'svelte';
+  import { callAlphaVantageBrowser } from '$lib/client/alphaVantage';
   let tickers = 'AAPL';
   let topics = '';
   let time_from = '';
@@ -38,18 +39,19 @@
     }
     loading = true;
     try {
-      const res = await fetch(`/api/news-sentiment?${q}`);
-      const ct = res.headers.get('content-type') || '';
-      const isJSON = ct.includes('application/json');
-      const body = isJSON ? await res.json() : await res.text();
-      if (!res.ok) {
-        error = isJSON ? JSON.stringify(body) : String(body);
-      } else {
-        data = body;
-        if (data && (data.Note || data.Information || data['Error Message'])) {
-          error = data.Note || data.Information || data['Error Message'];
-          data = null;
+      // Build params for AV NEWS_SENTIMENT
+      const params: Record<string, string> = {};
+      const usp = new URLSearchParams(q);
+      usp.forEach((v, k) => (params[k] = v));
+      const result = await callAlphaVantageBrowser('NEWS_SENTIMENT', params);
+      if (!result.ok) {
+        error = result.upstreamNote || result.error || 'Request failed';
+        if (result.data) {
+          // expose raw upstream data for debugging if available
+          data = result.data;
         }
+      } else {
+        data = result.data as any;
       }
     } catch (e) {
       error = e instanceof Error ? e.message : String(e);

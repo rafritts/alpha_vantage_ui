@@ -1,4 +1,4 @@
-import { env } from '$env/dynamic/private';
+ 
 
 export type AVFunction =
   | 'OVERVIEW'
@@ -11,9 +11,10 @@ export type AVFunction =
 
 export type QueryParams = Record<string, string | number | boolean | undefined | null>;
 
-export interface AVClientOptions {
-  baseUrl?: string;
-}
+ export interface AVClientOptions {
+   baseUrl?: string;
+   apiKey?: string;
+ }
 
 export interface AVResult<T = unknown> {
   ok: boolean;
@@ -38,23 +39,24 @@ function buildUrl(base: string, params: QueryParams): string {
  * Calls Alpha Vantage using server-side API key, handling its odd 200-with-error responses.
  * Returns JSON when possible, otherwise raw text.
  */
-export async function callAlphaVantage<T = unknown>(func: AVFunction, params: QueryParams = {}, opts: AVClientOptions = {}): Promise<AVResult<T>> {
-  const apiKey = env.ALPHA_VANTAGE_API_KEY;
-  if (!apiKey) {
-    return {
-      ok: false,
-      status: 500,
-      error: 'Server misconfigured: ALPHA_VANTAGE_API_KEY is not set'
-    };
-  }
+ export async function callAlphaVantage<T = unknown>(func: AVFunction, params: QueryParams = {}, opts: AVClientOptions = {}): Promise<AVResult<T>> {
+   // Require a client-provided key (from opts or query param). No env fallback.
+   const apiKey = opts.apiKey || (params.apikey as string | undefined);
+   if (!apiKey) {
+     return {
+       ok: false,
+       status: 400,
+       error: 'Missing Alpha Vantage API key. Provide ?apikey=... in the request.'
+     };
+   }
 
   const baseUrl = opts.baseUrl ?? 'https://www.alphavantage.co/query';
 
-  const url = buildUrl(baseUrl, {
-    function: func,
-    apikey: apiKey,
-    ...params
-  });
+   const url = buildUrl(baseUrl, {
+     function: func,
+     apikey: apiKey,
+     ...params
+   });
 
   try {
     const resp = await fetch(url);
@@ -91,11 +93,11 @@ export async function callAlphaVantage<T = unknown>(func: AVFunction, params: Qu
       };
     }
 
-    return {
-      ok: resp.ok,
-      status: resp.ok ? 200 : resp.status,
-      data: parsed as T
-    };
+     return {
+       ok: resp.ok,
+       status: resp.ok ? 200 : resp.status,
+       data: parsed as T
+     };
   } catch (err) {
     return {
       ok: false,
