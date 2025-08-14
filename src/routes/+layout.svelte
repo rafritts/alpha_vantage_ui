@@ -154,17 +154,17 @@
                         class="h-6 w-auto opacity-80 hover:opacity-100 transition-opacity"
                     />
                 </a>
-                <a href="https://daisyui.com" target="_blank" rel="noreferrer" class="inline-flex items-center" aria-label="daisyUI">
-                    <img
-                        alt="daisyUI logo"
-                        src="https://img.daisyui.com/images/daisyui/mark.svg"
-                        class="h-6 w-auto opacity-80 hover:opacity-100 transition-opacity"
-                    />
-                </a>
                 <a href="https://tailwindcss.com" target="_blank" rel="noreferrer" class="inline-flex items-center" aria-label="Tailwind CSS">
                     <img
                         alt="Tailwind CSS logo"
                         src="https://upload.wikimedia.org/wikipedia/commons/d/d5/Tailwind_CSS_Logo.svg"
+                        class="h-6 w-auto opacity-80 hover:opacity-100 transition-opacity"
+                    />
+                </a>
+                <a href="https://daisyui.com" target="_blank" rel="noreferrer" class="inline-flex items-center" aria-label="daisyUI">
+                    <img
+                        alt="daisyUI logo"
+                        src="https://img.daisyui.com/images/daisyui/mark.svg"
                         class="h-6 w-auto opacity-80 hover:opacity-100 transition-opacity"
                     />
                 </a>

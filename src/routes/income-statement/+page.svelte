@@ -1,6 +1,7 @@
 <script lang="ts">
   import { formatValue } from '$lib/utils';
   import { symbolStore } from '$lib/stores/symbol';
+  import { callAlphaVantageBrowser } from '$lib/client/alphaVantage';
   let symbol = 'AAPL';
   let loading = false;
   let error: string | null = null;
@@ -22,18 +23,15 @@
     }
     loading = true;
     try {
-      const res = await fetch(`/api/income-statement?symbol=${encodeURIComponent(s)}`);
-      const ct = res.headers.get('content-type') || '';
-      const isJSON = ct.includes('application/json');
-      const body = isJSON ? await res.json() : await res.text();
-      if (!res.ok) {
-        error = isJSON ? JSON.stringify(body) : String(body);
-      } else {
-        data = body as Record<string, any>;
-        if (data && (data.Note || data.Information || data['Error Message'])) {
-          error = data.Note || data.Information || data['Error Message'];
-          data = null;
+      const result = await callAlphaVantageBrowser('INCOME_STATEMENT', { symbol: s });
+      if (!result.ok) {
+        error = result.upstreamNote || result.error || 'Request failed';
+        const payload = (result.data ?? {}) as Record<string, any>;
+        if (payload && (payload.Note || payload.Information || payload['Error Message'])) {
+          error = payload.Note || payload.Information || payload['Error Message'];
         }
+      } else {
+        data = (result.data ?? null) as Record<string, any> | null;
       }
     } catch (e) {
       error = e instanceof Error ? e.message : String(e);

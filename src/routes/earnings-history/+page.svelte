@@ -1,5 +1,6 @@
 <script lang="ts">
   import { symbolStore } from '$lib/stores/symbol';
+  import { callAlphaVantageBrowser } from '$lib/client/alphaVantage';
 
   let loading = false;
   let error: string | null = null;
@@ -17,19 +18,15 @@
     }
     loading = true;
     try {
-      const res = await fetch(`/api/earnings-history?symbol=${encodeURIComponent(s)}`);
-      const ct = res.headers.get('content-type') || '';
-      const isJSON = ct.includes('application/json');
-      const body = isJSON ? await res.json() : await res.text();
-      if (!res.ok) {
-        error = isJSON ? JSON.stringify(body) : String(body);
-      } else {
-        const payload = body as Record<string, any>;
+      const result = await callAlphaVantageBrowser('EARNINGS', { symbol: s });
+      if (!result.ok) {
+        error = result.upstreamNote || result.error || 'Request failed';
+        const payload = (result.data ?? {}) as Record<string, any>;
         if (payload && (payload.Note || payload.Information || payload['Error Message'])) {
           error = payload.Note || payload.Information || payload['Error Message'];
-        } else {
-          data = payload;
         }
+      } else {
+        data = (result.data ?? null) as Record<string, any> | null;
       }
     } catch (e) {
       error = e instanceof Error ? e.message : String(e);
