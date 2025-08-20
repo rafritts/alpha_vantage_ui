@@ -9,13 +9,13 @@ A simple SvelteKit UI for Alpha Vantage Fundamental Data, starting with the Comp
 
 ## Setup
 
-1) Install dependencies:
+1. Install dependencies:
 
 ```sh
 npm install
 ```
 
-2) Create your env file:
+2. Create your env file:
 
 ```sh
 cp .env.example .env

@@ -5,7 +5,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Development Commands
 
 - `npm run dev` - Start development server (http://localhost:5173)
-- `npm run build` - Build the production application 
+- `npm run build` - Build the production application
 - `npm run preview` - Preview production build locally
 - `npm run check` - Run Svelte type checking
 - `npm run check:watch` - Run type checking in watch mode
@@ -26,7 +26,8 @@ This is a SvelteKit 5 application that provides a UI for Alpha Vantage API endpo
 
 **Static Site Generation**: Configured with `@sveltejs/adapter-static` for deployment to GitHub Pages. All routes are pre-rendered with fallback to `200.html` for SPA behavior.
 
-**State Management**: 
+**State Management**:
+
 - API key storage via Svelte stores backed by sessionStorage (`src/lib/stores/apiKey.ts`)
 - Symbol management through dedicated store (`src/lib/stores/symbol.ts`)
 
@@ -50,6 +51,7 @@ This is a SvelteKit 5 application that provides a UI for Alpha Vantage API endpo
 ### API Integration Pattern
 
 The `callAlphaVantageBrowser()` function in `src/lib/client/alphaVantage.ts` handles:
+
 - API key retrieval from sessionStorage
 - URL construction with query parameters
 - Error handling for rate limits and API errors
