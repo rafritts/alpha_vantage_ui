@@ -5,6 +5,7 @@ export type AVFunction =
   | 'BALANCE_SHEET'
   | 'CASH_FLOW'
   | 'NEWS_SENTIMENT'
+  | 'EARNINGS_CALL_TRANSCRIPT'
   | string;
 
 export type QueryParams = Record<string, string | number | boolean | undefined | null>;

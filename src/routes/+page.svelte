@@ -49,6 +49,11 @@
       description="See analyst EPS estimates (annual and quarterly) with simple visualizations."
       href="/earnings-estimates"
     />
+    <Card 
+      title="Earnings Call Transcript"
+      description="Access earnings call transcripts with speaker information and sentiment analysis."
+      href="/earnings-call-transcript"
+    />
   </div>
 </div>
 
