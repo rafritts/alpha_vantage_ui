@@ -43,7 +43,7 @@
 		try {
 			localStorage.setItem('theme', t);
 		} catch (e) {
-			// ignore storage errors (e.g., SSR or privacy mode)
+			// ignore for now
 		}
 	};
 
@@ -58,7 +58,7 @@
 			const v = localStorage.getItem('theme');
 			if (v === 'light' || v === 'dark') saved = v;
 		} catch (e) {
-			// ignore
+			// ignore for now
 		}
 		if (!saved) {
 			const prefersDark =
