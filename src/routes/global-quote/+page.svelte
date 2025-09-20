@@ -2,6 +2,7 @@
 	import { symbolStore } from '$lib/stores/symbol';
 	import { callAlphaVantageFromBrowser } from '$lib/client/alphaVantage';
 	import SymbolSearch from '$lib/components/SymbolSearch.svelte';
+	import BackButton from '$lib/components/BackButton.svelte';
 	let symbol = 'IBM';
 	let loading = false;
 	let error: string | null = null;
@@ -73,6 +74,7 @@
 
 <section class="space-y-6">
 	<div class="flex items-center gap-3">
+		<BackButton variant="primary" size="sm" />
 		<h1 class="text-3xl font-bold">Global Quote</h1>
 		<div class="badge badge-secondary">Market Data</div>
 	</div>
