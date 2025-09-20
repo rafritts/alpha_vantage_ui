@@ -88,7 +88,7 @@
 					{#if $apiKeyStore}
 						<span class="ml-2 badge badge-sm badge-success">Set</span>
 					{:else}
-						<span class="ml-2 badge badge-ghost badge-sm">Session-only</span>
+						<span class="ml-2 badge badge-ghost badge-sm">Not Set</span>
 					{/if}
 				</button>
 				<a
