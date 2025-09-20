@@ -13,8 +13,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `npm run format` - Format code with Prettier
 - `npm run test` - Run all tests once
 - `npm run test:unit` - Run tests in watch mode
-- `npm run deploy` - Deploy to GitHub Pages
-- `npm run build-deploy` - Build and deploy in one command
+- `npm run build` - Build for production (Vercel deploys automatically from git)
 
 ## Architecture Overview
 
@@ -24,7 +23,7 @@ This is a SvelteKit 5 application that provides a UI for Alpha Vantage API endpo
 
 **Client-Side API Integration**: The app uses direct browser calls to Alpha Vantage API (`src/lib/client/alphaVantage.ts`) rather than server-side proxy routes. API keys are managed through sessionStorage for security and user convenience.
 
-**Static Site Generation**: Configured with `@sveltejs/adapter-static` for deployment to GitHub Pages. All routes are pre-rendered with fallback to `200.html` for SPA behavior.
+**Static Site Generation**: Configured with `@sveltejs/adapter-auto` for deployment to Vercel. All routes are pre-rendered for optimal performance.
 
 **State Management**:
 
@@ -46,7 +45,7 @@ This is a SvelteKit 5 application that provides a UI for Alpha Vantage API endpo
 - **Testing**: Vitest for unit tests
 - **Build**: Vite with TailwindCSS plugin
 - **Linting**: ESLint + Prettier with Svelte-specific configs
-- **Deployment**: GitHub Pages via gh-pages
+- **Deployment**: Vercel
 
 ### API Integration Pattern
 

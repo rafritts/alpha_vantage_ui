@@ -59,4 +59,6 @@ npm run build
 npm run preview
 ```
 
-For deployment, choose an adapter per target platform: https://svelte.dev/docs/kit/adapters
+## Deployment
+
+This project is deployed on Vercel using the SvelteKit adapter-auto, which automatically configures the project for Vercel deployment.
