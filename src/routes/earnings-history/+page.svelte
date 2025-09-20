@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { symbolStore } from '$lib/stores/symbol';
-	import { callAlphaVantageBrowser } from '$lib/client/alphaVantage';
+	import { callAlphaVantageFromBrowser } from '$lib/client/alphaVantage';
+	import SymbolSearch from '$lib/components/SymbolSearch.svelte';
 
 	let loading = false;
 	let error: string | null = null;
@@ -18,7 +19,7 @@
 		}
 		loading = true;
 		try {
-			const result = await callAlphaVantageBrowser('EARNINGS', { symbol: s });
+			const result = await callAlphaVantageFromBrowser('EARNINGS', { symbol: s });
 			if (!result.ok) {
 				error = result.upstreamNote || result.error || 'Request failed';
 				const payload = (result.data ?? {}) as Record<string, any>;
@@ -35,10 +36,7 @@
 		}
 	}
 
-	function onSubmit(e: Event) {
-		e.preventDefault();
-		fetchEarnings();
-	}
+	// Remove onSubmit as we're using the SymbolSearch component's submit handling
 
 	type QE = {
 		fiscalDateEnding: string;
@@ -258,34 +256,18 @@
 
 <section class="space-y-6">
 	<div class="flex items-center gap-3">
-		<h1 class="text-3xl font-bold">Alpha Vantage — Earnings History</h1>
+		<h1 class="text-3xl font-bold">Earnings History</h1>
 		<div class="badge badge-accent">Fundamentals</div>
 	</div>
 
 	<div class="card bg-base-100 shadow">
 		<div class="card-body">
-			<form class="flex flex-wrap items-end gap-3" on:submit={onSubmit}>
-				<label class="form-control w-full sm:w-auto">
-					<div class="label">
-						<span class="label-text font-semibold">Symbol</span>
-					</div>
-					<input
-						id="symbol"
-						name="symbol"
-						class="input-bordered input w-48"
-						bind:value={$symbolStore}
-						placeholder="e.g. AAPL"
-						autocomplete="off"
-					/>
-				</label>
-				<button type="submit" class="btn btn-primary" disabled={loading}>
-					{#if loading}
-						<span class="loading loading-sm loading-spinner"></span>
-						Loading
-					{:else}
-						Fetch Earnings
-					{/if}
-				</button>
+			<div class="flex flex-wrap items-end gap-3">
+				<SymbolSearch 
+					submitButtonText={loading ? 'Loading...' : 'Fetch Earnings'}
+					loading={loading}
+					on:search={() => fetchEarnings()}
+				/>
 				{#if data}
 					<div class="ml-auto flex items-center gap-2">
 						<span class="label-text font-semibold">View:</span>
@@ -295,7 +277,7 @@
 								class="btn join-item btn-sm md:btn-md"
 								class:btn-primary={showAnnual}
 								class:btn-ghost={!showAnnual}
-								on:click={() => (showAnnual = true)}
+								onclick={() => (showAnnual = true)}
 							>
 								Annual
 							</button>
@@ -304,14 +286,14 @@
 								class="btn join-item btn-sm md:btn-md"
 								class:btn-primary={!showAnnual}
 								class:btn-ghost={showAnnual}
-								on:click={() => (showAnnual = false)}
+								onclick={() => (showAnnual = false)}
 							>
 								Quarterly
 							</button>
 						</div>
 					</div>
 				{/if}
-			</form>
+			</div>
 
 			{#if error}
 				<div class="mt-3 alert alert-error whitespace-pre-wrap">

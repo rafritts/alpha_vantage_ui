@@ -95,7 +95,7 @@
 					class="btn btn-primary"
 					href="https://www.alphavantage.co/documentation/"
 					target="_blank"
-					rel="noreferrer">Docs</a
+					rel="noreferrer">AlphaVantage Docs</a
 				>
 				<label
 					class="btn swap btn-circle h-8 min-h-0 w-8 swap-rotate p-0 ring-0 btn-ghost btn-xs focus:ring-0 focus:outline-none focus-visible:outline-none"

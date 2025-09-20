@@ -6,6 +6,7 @@ export type AVFunction =
 	| 'CASH_FLOW'
 	| 'NEWS_SENTIMENT'
 	| 'EARNINGS_CALL_TRANSCRIPT'
+	| 'SYMBOL_SEARCH'
 	| string;
 
 export type QueryParams = Record<string, string | number | boolean | undefined | null>;
@@ -39,7 +40,7 @@ function buildUrl(base: string, params: QueryParams): string {
 	return url.toString();
 }
 
-export async function callAlphaVantageBrowser<T = unknown>(
+export async function callAlphaVantageFromBrowser<T = unknown>(
 	func: AVFunction,
 	params: QueryParams = {},
 	baseUrl = 'https://www.alphavantage.co/query'
@@ -72,4 +73,39 @@ export async function callAlphaVantageBrowser<T = unknown>(
 	} catch (err) {
 		return { ok: false, status: 0, error: err instanceof Error ? err.message : String(err) };
 	}
+}
+
+export interface SymbolSearchResult {
+	'1. symbol': string;
+	'2. name': string;
+	'3. type': string;
+	'4. region': string;
+	'5. marketOpen': string;
+	'6. marketClose': string;
+	'7. timezone': string;
+	'8. currency': string;
+	'9. matchScore': string;
+}
+
+export interface SymbolSearchResponse {
+	bestMatches: SymbolSearchResult[];
+}
+
+/**
+ * Search for stock symbols using Alpha Vantage's SYMBOL_SEARCH endpoint
+ * @param keywords Search keywords for company name or symbol
+ * @returns Promise with search results
+ */
+export async function searchSymbols(keywords: string): Promise<AVResult<SymbolSearchResponse>> {
+	if (!keywords || keywords.trim().length < 1) {
+		return {
+			ok: true,
+			status: 200,
+			data: { bestMatches: [] }
+		};
+	}
+
+	return callAlphaVantageFromBrowser<SymbolSearchResponse>('SYMBOL_SEARCH', {
+		keywords: keywords.trim()
+	});
 }

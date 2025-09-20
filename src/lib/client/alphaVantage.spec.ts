@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 
 // Import after environment setup in each test when necessary
-import { getApiKeyFromSession, callAlphaVantageBrowser } from './alphaVantage';
+import { getApiKeyFromSession, callAlphaVantageFromBrowser } from './alphaVantage';
 
 declare global {
 	// eslint-disable-next-line no-var
@@ -70,7 +70,7 @@ describe('callAlphaVantageBrowser', () => {
 	});
 
 	it('fails early if no API key available', async () => {
-		const res = await callAlphaVantageBrowser('OVERVIEW', {});
+		const res = await callAlphaVantageFromBrowser('OVERVIEW', {});
 		expect(res.ok).toBe(false);
 		expect(res.status).toBe(400);
 		expect(res.error).toMatch(/Missing Alpha Vantage API key/i);
@@ -79,7 +79,7 @@ describe('callAlphaVantageBrowser', () => {
 	it('uses sessionStorage api key when not provided in params', async () => {
 		mockSessionStorage({ av_api_key: 'FROM_SESSION' });
 		const spy = mockFetchOnce({ ok: true, status: 200, body: JSON.stringify({ hello: 'world' }) });
-		const res = await callAlphaVantageBrowser(
+		const res = await callAlphaVantageFromBrowser(
 			'OVERVIEW',
 			{ symbol: 'AAPL' },
 			'https://example.test/query'
@@ -96,7 +96,7 @@ describe('callAlphaVantageBrowser', () => {
 	it('param apikey overrides sessionStorage api key', async () => {
 		mockSessionStorage({ av_api_key: 'FROM_SESSION' });
 		const spy = mockFetchOnce({ ok: true, status: 200, body: JSON.stringify({ ok: 1 }) });
-		await callAlphaVantageBrowser('GLOBAL_QUOTE', { apikey: 'FROM_PARAM' });
+		await callAlphaVantageFromBrowser('GLOBAL_QUOTE', { apikey: 'FROM_PARAM' });
 		const calledUrl = (spy.mock.calls[0] as any[])[0] as string;
 		expect(calledUrl).toContain('apikey=FROM_PARAM');
 	});
@@ -104,7 +104,7 @@ describe('callAlphaVantageBrowser', () => {
 	it('surfaces upstream Note/Information as a 429 with upstreamNote', async () => {
 		mockSessionStorage({ av_api_key: 'KEY' });
 		mockFetchOnce({ ok: true, status: 200, body: JSON.stringify({ Note: 'Please try again' }) });
-		const res = await callAlphaVantageBrowser('OVERVIEW');
+		const res = await callAlphaVantageFromBrowser('OVERVIEW');
 		expect(res.ok).toBe(false);
 		expect(res.status).toBe(429);
 		expect(res.upstreamNote).toBe('Please try again');
@@ -114,7 +114,7 @@ describe('callAlphaVantageBrowser', () => {
 	it('returns text when response is not JSON', async () => {
 		mockSessionStorage({ av_api_key: 'KEY' });
 		mockFetchOnce({ ok: true, status: 200, body: 'plain text response' });
-		const res = await callAlphaVantageBrowser('OVERVIEW');
+		const res = await callAlphaVantageFromBrowser('OVERVIEW');
 		expect(res.ok).toBe(true);
 		expect(res.status).toBe(200);
 		expect(res.text).toBe('plain text response');
@@ -123,7 +123,7 @@ describe('callAlphaVantageBrowser', () => {
 	it('propagates http error status when not ok and JSON without note', async () => {
 		mockSessionStorage({ av_api_key: 'KEY' });
 		mockFetchOnce({ ok: false, status: 503, body: JSON.stringify({ error: 'down' }) });
-		const res = await callAlphaVantageBrowser('OVERVIEW');
+		const res = await callAlphaVantageFromBrowser('OVERVIEW');
 		expect(res.ok).toBe(false);
 		expect(res.status).toBe(503);
 		expect(res.data).toEqual({ error: 'down' });
@@ -132,7 +132,7 @@ describe('callAlphaVantageBrowser', () => {
 	it('returns error on fetch rejection', async () => {
 		mockSessionStorage({ av_api_key: 'KEY' });
 		vi.spyOn(global, 'fetch' as any).mockRejectedValueOnce(new Error('network fail'));
-		const res = await callAlphaVantageBrowser('OVERVIEW');
+		const res = await callAlphaVantageFromBrowser('OVERVIEW');
 		expect(res.ok).toBe(false);
 		expect(res.status).toBe(0);
 		expect(res.error).toMatch(/network fail/);
