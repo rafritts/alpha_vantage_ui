@@ -5,7 +5,7 @@
 	import { Key } from 'lucide-svelte';
 	import { LayoutGrid } from 'lucide-svelte';
 	import { onMount } from 'svelte';
-	import { apiKeyStore } from '$lib/stores/apiKey';
+	import { apiKeyStore, persistentStorage, isSessionOnly } from '$lib/stores/apiKey';
 	import { sanitizeInput } from '$lib/utils/sanitize';
 
 	let { children } = $props();
@@ -13,9 +13,11 @@
 	// API key modal state
 	let showApiModal = $state(false);
 	let tempKey = $state('');
+	let isPersistent = $state(false);
 
 	function openApiKeyModal() {
 		tempKey = $apiKeyStore ?? '';
+		isPersistent = !$isSessionOnly;
 		showApiModal = true;
 	}
 
@@ -24,6 +26,9 @@
 	}
 
 	function saveApiKey() {
+		// Update persistence preference first
+		persistentStorage.set(isPersistent);
+		
 		// Sanitize the API key before storing it
 		apiKeyStore.set(sanitizeInput(tempKey.trim()));
 		showApiModal = false;
@@ -95,6 +100,11 @@
 					API Key
 					{#if $apiKeyStore}
 						<span class="ml-2 badge badge-sm badge-success">Set</span>
+						{#if $isSessionOnly}
+							<span class="ml-1 badge badge-xs badge-ghost">Session-only</span>
+						{:else}
+							<span class="ml-1 badge badge-xs badge-info">Persistent</span>
+						{/if}
 					{:else}
 						<span class="ml-2 badge badge-ghost badge-sm">Not Set</span>
 					{/if}
@@ -157,17 +167,36 @@
 		<dialog open class="modal">
 			<div class="modal-box">
 				<h3 class="text-lg font-bold">Alpha Vantage API Key</h3>
-				<p class="py-2 text-sm opacity-80">
-					Your key is stored in sessionStorage and cleared when this tab closes.
-				</p>
-				<input
-					type="text"
-					class="input-bordered input w-full"
-					bind:value={tempKey}
-					placeholder="Enter your API key"
-					autocomplete="off"
-					spellcheck={false}
-				/>
+				<div class="py-2 h-[3rem]">
+					{#if !isPersistent}
+						<p class="text-sm opacity-80">Your key is stored in session storage and cleared when this tab closes.</p>
+					{:else}
+						<p class="text-sm opacity-80">Your key will be stored encrypted in local storage and persist across sessions. You can clear it at any time.</p>
+					{/if}
+				</div>
+				<div class="mt-3">
+					<input
+						type="text"
+						class="input-bordered input w-full mb-4"
+						bind:value={tempKey}
+						placeholder="Enter your API key"
+						autocomplete="off"
+						spellcheck={false}
+					/>
+				</div>
+				
+				<div class="form-control w-full">
+					<label class="flex items-start gap-3 cursor-pointer">
+						<input type="checkbox" class="checkbox checkbox-primary mt-1" bind:checked={isPersistent} />
+						<div class="flex flex-col">
+							<span class="label-text font-medium">Store API key permanently (encrypted)</span>
+							<span class="label-text text-xs opacity-70 mt-1">
+								I understand there is a small risk of XSS attacks with persistent storage
+							</span>
+						</div>
+					</label>
+				</div>
+				
 				<div class="modal-action">
 					{#if $apiKeyStore}
 						<button class="btn btn-outline" onclick={clearApiKey}>Clear</button>
