@@ -1,3 +1,5 @@
+import { decrypt } from '$lib/utils/encryption';
+
 export type AVFunction =
 	| 'OVERVIEW'
 	| 'GLOBAL_QUOTE'
@@ -11,7 +13,7 @@ export type AVFunction =
 
 export type QueryParams = Record<string, string | number | boolean | undefined | null>;
 
-export interface AVResult<T = unknown> {
+export type AVResult<T = unknown> = {
 	ok: boolean;
 	status: number;
 	data?: T;
@@ -21,13 +23,25 @@ export interface AVResult<T = unknown> {
 }
 
 const STORAGE_KEY = 'av_api_key';
+const LOCAL_STORAGE_KEY = 'av_api_key_persistent';
 
-export function getApiKeyFromSession(): string | null {
+export function getApiKey(): string | null {
 	try {
+		// First check localStorage for encrypted key
+		if (typeof localStorage !== 'undefined') {
+			const encryptedKey = localStorage.getItem(LOCAL_STORAGE_KEY);
+			if (encryptedKey) {
+				return decrypt(encryptedKey);
+			}
+		}
+		
+		// Fall back to sessionStorage
 		if (typeof sessionStorage !== 'undefined') {
 			return sessionStorage.getItem(STORAGE_KEY);
 		}
-	} catch {}
+	} catch (e) {
+		console.error('Error retrieving API key:', e);
+	}
 	return null;
 }
 
@@ -45,7 +59,7 @@ export async function callAlphaVantageFromBrowser<T = unknown>(
 	params: QueryParams = {},
 	baseUrl = 'https://www.alphavantage.co/query'
 ): Promise<AVResult<T>> {
-	const apiKey = (params.apikey as string | undefined) ?? getApiKeyFromSession() ?? undefined;
+	const apiKey = (params.apikey as string | undefined) ?? getApiKey() ?? undefined;
 	if (!apiKey) {
 		return { ok: false, status: 400, error: 'Missing Alpha Vantage API key' };
 	}

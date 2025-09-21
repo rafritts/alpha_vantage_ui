@@ -4,6 +4,7 @@
 	import { BookText } from 'lucide-svelte';
 	import { Key } from 'lucide-svelte';
 	import { LayoutGrid } from 'lucide-svelte';
+	import { Eye, EyeOff } from 'lucide-svelte';
 	import { onMount } from 'svelte';
 	import { apiKeyStore, persistentStorage, isSessionOnly } from '$lib/stores/apiKey';
 	import { sanitizeInput } from '$lib/utils/sanitize';
@@ -14,6 +15,7 @@
 	let showApiModal = $state(false);
 	let tempKey = $state('');
 	let isPersistent = $state(false);
+	let showPassword = $state(false);
 
 	function openApiKeyModal() {
 		tempKey = $apiKeyStore ?? '';
@@ -174,15 +176,27 @@
 						<p class="text-sm opacity-80">Your key will be stored encrypted in local storage and persist across sessions. You can clear it at any time.</p>
 					{/if}
 				</div>
-				<div class="mt-3">
+				<div class="mt-3 relative">
 					<input
-						type="text"
-						class="input-bordered input w-full mb-4"
+						type={showPassword ? 'text' : 'password'}
+						class="input-bordered input w-full mb-4 pr-10"
 						bind:value={tempKey}
 						placeholder="Enter your API key"
 						autocomplete="off"
 						spellcheck={false}
 					/>
+					<button 
+						type="button" 
+						class="absolute right-3 top-3 text-gray-500 hover:text-gray-700 transition-colors"
+						onclick={() => showPassword = !showPassword}
+						aria-label={showPassword ? 'Hide API key' : 'Show API key'}
+					>
+						{#if showPassword}
+							<EyeOff size={18} />
+						{:else}
+							<Eye size={18} />
+						{/if}
+					</button>
 				</div>
 				
 				<div class="form-control w-full">
