@@ -1,6 +1,9 @@
 <script lang="ts">
 	import '../app.css';
 	import favicon from '$lib/assets/favicon.svg';
+	import { BookText } from 'lucide-svelte';
+	import { Key } from 'lucide-svelte';
+	import { LayoutGrid } from 'lucide-svelte';
 	import { onMount } from 'svelte';
 	import { apiKeyStore } from '$lib/stores/apiKey';
 	import { sanitizeInput } from '$lib/utils/sanitize';
@@ -82,10 +85,13 @@
 	<div class="navbar bg-base-100 shadow">
 		<div class="container mx-auto flex items-center justify-between px-4">
 			<div class="flex-1">
-				<a class="btn text-xl btn-ghost" href="/">Alpha Vantage UI</a>
+				<a class="btn text-xl btn-ghost" href="/">
+					<LayoutGrid />
+					Alpha Vantage UI</a>
 			</div>
 			<div class="flex flex-none items-center gap-2">
 				<button class="btn btn-secondary" onclick={openApiKeyModal} aria-label="Set API Key">
+					<Key />
 					API Key
 					{#if $apiKeyStore}
 						<span class="ml-2 badge badge-sm badge-success">Set</span>
@@ -97,7 +103,9 @@
 					class="btn btn-primary"
 					href="https://www.alphavantage.co/documentation/"
 					target="_blank"
-					rel="noreferrer">AlphaVantage Docs</a
+					rel="noreferrer">
+					<BookText />
+					AlphaVantage Docs</a
 				>
 				<label
 					class="btn swap btn-circle h-8 min-h-0 w-8 swap-rotate p-0 ring-0 btn-ghost btn-xs focus:ring-0 focus:outline-none focus-visible:outline-none"

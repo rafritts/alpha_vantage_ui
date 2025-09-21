@@ -47,7 +47,7 @@ export async function callAlphaVantageFromBrowser<T = unknown>(
 ): Promise<AVResult<T>> {
 	const apiKey = (params.apikey as string | undefined) ?? getApiKeyFromSession() ?? undefined;
 	if (!apiKey) {
-		return { ok: false, status: 400, error: 'Missing Alpha Vantage API key in sessionStorage' };
+		return { ok: false, status: 400, error: 'Missing Alpha Vantage API key' };
 	}
 
 	const url = buildUrl(baseUrl, { function: func, apikey: apiKey, ...params });

@@ -4,8 +4,7 @@
 
 <div class="container mx-auto px-4 py-8">
 	<div class="mb-12 text-center">
-		<h1 class="mb-2 text-4xl font-bold">Alpha Vantage API Data Viewer</h1>
-		<p class="text-lg text-gray-500">Click on any of the cards below to view the API data.</p>
+		<p class="text-lg text-gray-500">Click on any of the cards below to view the API data. Make sure to set your API key first.</p>
 	</div>
 
 	<div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
