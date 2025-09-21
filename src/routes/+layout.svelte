@@ -101,6 +101,7 @@
 </script>
 
 <svelte:head>
+	<title>Alpha Vantage UI</title>
 	<link rel="icon" href={favicon} />
 </svelte:head>
 
