@@ -3,7 +3,7 @@
 	import { symbolStore } from '$lib/stores/symbol';
 	import { callAlphaVantageFromBrowser } from '$lib/client/alphaVantage';
 	import SymbolSearch from '$lib/components/SymbolSearch.svelte';
-	import BackButton from '$lib/components/BackButton.svelte';
+	import PageHeader from '$lib/components/PageHeader.svelte';
 	import { sanitizeInput } from '$lib/utils/sanitize';
 	let symbol = 'AAPL';
 	let loading = false;
@@ -102,11 +102,7 @@
 </script>
 
 <section class="space-y-6">
-	<div class="flex items-center gap-3">
-		<BackButton variant="primary" size="sm" />
-		<h1 class="text-3xl font-bold">Cash Flow</h1>
-		<div class="badge badge-primary">Fundamentals</div>
-	</div>
+	<PageHeader title="Cash Flow" badgeText="Fundamentals" badgeColor="primary" />
 
 	<div class="card bg-base-100 shadow">
 		<div class="card-body">

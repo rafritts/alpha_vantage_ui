@@ -3,7 +3,7 @@
 	import { onMount } from 'svelte';
 	import { callAlphaVantageFromBrowser } from '$lib/client/alphaVantage';
 	import SymbolSearch from '$lib/components/SymbolSearch.svelte';
-	import BackButton from '$lib/components/BackButton.svelte';
+	import PageHeader from '$lib/components/PageHeader.svelte';
 	import { sanitizeInput } from '$lib/utils/sanitize';
 	let tickers = 'AAPL';
 	let topics = '';
@@ -129,11 +129,7 @@
 </script>
 
 <section class="space-y-6">
-	<div class="flex items-center gap-3">
-		<BackButton variant="primary" size="sm" />
-		<h1 class="text-3xl font-bold">News Sentiment</h1>
-		<div class="badge badge-secondary">Alpha Intelligence&trade;</div>
-	</div>
+	<PageHeader title="News Sentiment" badgeText="Alpha Intelligence™" badgeColor="secondary" />
 
 	<div class="card bg-base-100 shadow">
 		<div class="card-body">

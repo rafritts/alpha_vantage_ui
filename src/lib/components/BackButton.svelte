@@ -4,11 +4,12 @@
   export let ariaLabel = "Back to card selection";
   export let variant = "primary"; // primary, secondary, accent, etc.
   export let size = "sm"; // sm, md, lg
+  export let className = ""; // Additional classes
 </script>
 
 <a 
   {href} 
-  class="btn btn-{variant} btn-{size} btn-circle" 
+  class="btn btn-{variant} btn-{size} {className.includes('w-full') ? '' : 'btn-circle'}  {className}" 
   aria-label={ariaLabel}
 >
   <svg 
@@ -26,4 +27,7 @@
     <line x1="19" y1="12" x2="5" y2="12"></line>
     <polyline points="12 19 5 12 12 5"></polyline>
   </svg>
+  {#if className.includes('w-full')}
+    <span class="ml-2">Back</span>
+  {/if}
 </a>

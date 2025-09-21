@@ -1,7 +1,7 @@
 @import 'tailwindcss';
-@plugin '@tailwindcss/forms';
-@plugin '@tailwindcss/typography';
-@plugin 'daisyui';
+@import '@tailwindcss/forms';
+@import '@tailwindcss/typography';
+@import 'daisyui';
 
 /* Smooth theme transition when toggling data-theme */
 @media (prefers-reduced-motion: no-preference) {
@@ -12,4 +12,20 @@
 		transition-duration: 500ms;
 		transition-timing-function: ease;
 	}
+}
+
+/* Mobile menu animation */
+@keyframes slideDown {
+	from {
+		opacity: 0;
+		transform: translateY(-10px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+.animate-slideDown {
+	animation: slideDown 0.2s ease-out forwards;
 }

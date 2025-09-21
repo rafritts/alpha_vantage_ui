@@ -5,11 +5,24 @@
 	import { Key } from 'lucide-svelte';
 	import { LayoutGrid } from 'lucide-svelte';
 	import { Eye, EyeOff } from 'lucide-svelte';
+	import { Menu, X } from 'lucide-svelte';
+	import { SquareArrowOutUpRight } from 'lucide-svelte';
 	import { onMount } from 'svelte';
 	import { apiKeyStore, persistentStorage, isSessionOnly } from '$lib/stores/apiKey';
 	import { sanitizeInput } from '$lib/utils/sanitize';
 
 	let { children } = $props();
+	
+	// Mobile menu state
+	let mobileMenuOpen = $state(false);
+	
+	function toggleMobileMenu() {
+		mobileMenuOpen = !mobileMenuOpen;
+	}
+	
+	function closeMobileMenu() {
+		mobileMenuOpen = false;
+	}
 
 	// API key modal state
 	let showApiModal = $state(false);
@@ -94,9 +107,28 @@
 			<div class="flex-1">
 				<a class="btn text-xl btn-ghost" href="/">
 					<LayoutGrid />
-					Alpha Vantage UI</a>
+					<span class="hidden sm:inline">Alpha Vantage UI</span>
+					<span class="inline sm:hidden">AV UI</span>
+				</a>
 			</div>
-			<div class="flex flex-none items-center gap-2">
+			
+			<!-- Mobile menu toggle button -->
+			<div class="flex md:hidden">
+				<button 
+					class="btn btn-ghost btn-circle" 
+					onclick={toggleMobileMenu}
+					aria-label="Toggle mobile menu"
+				>
+					{#if mobileMenuOpen}
+						<X size={24} />
+					{:else}
+						<Menu size={24} />
+					{/if}
+				</button>
+			</div>
+			
+			<!-- Desktop navigation -->
+			<div class="hidden md:flex flex-none items-center gap-2">
 				<button class="btn btn-secondary" onclick={openApiKeyModal} aria-label="Set API Key">
 					<Key />
 					API Key
@@ -164,12 +196,74 @@
 			</div>
 		</div>
 	</div>
+	
+	<!-- Mobile menu (slide down) -->
+	{#if mobileMenuOpen}
+		<div class="md:hidden bg-base-100 shadow-md animate-slideDown">
+			<div class="container mx-auto px-4 py-3 flex flex-col gap-3">
+				<button 
+					class="btn btn-secondary w-full justify-between" 
+					onclick={() => {
+						openApiKeyModal();
+						closeMobileMenu();
+					}} 
+					aria-label="Set API Key"
+				>
+					<span class="flex items-center gap-2">
+						<Key />
+						API Key
+					</span>
+					<span class="flex items-center gap-1">
+						{#if $apiKeyStore}
+							<span class="badge badge-sm badge-success">Set</span>
+							{#if $isSessionOnly}
+								<span class="badge badge-xs badge-ghost">Session-only</span>
+							{:else}
+								<span class="badge badge-xs badge-info">Persistent</span>
+							{/if}
+						{:else}
+							<span class="badge badge-ghost badge-sm">Not Set</span>
+						{/if}
+					</span>
+				</button>
+				
+				<a
+					class="btn btn-primary w-full justify-start"
+					href="https://www.alphavantage.co/documentation/"
+					target="_blank"
+					rel="noreferrer"
+					onclick={closeMobileMenu}
+				>
+					<BookText />
+					AlphaVantage Docs
+				</a>
+				
+				<div class="flex items-center justify-between border-t border-base-300 pt-3">
+					<span class="text-sm">Theme</span>
+					<label class="swap swap-rotate">
+						<input
+							type="checkbox"
+							onchange={(e) => {
+								const checked = (e.currentTarget as HTMLInputElement).checked;
+								theme = checked ? 'dark' : 'light';
+								applyTheme(theme);
+							}}
+							checked={theme === 'dark'}
+							aria-label="Theme toggle"
+						/>
+						<svg class="swap-on h-6 w-6 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path></svg>
+						<svg class="swap-off h-6 w-6 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+					</label>
+				</div>
+			</div>
+		</div>
+	{/if}
 
 	{#if showApiModal}
 		<dialog open class="modal">
 			<div class="modal-box">
 				<h3 class="text-lg font-bold">Alpha Vantage API Key</h3>
-				<div class="py-2 h-[3rem]">
+				<div class="py-2 h-[4rem]">
 					{#if !isPersistent}
 						<p class="text-sm opacity-80">Your key is stored in session storage and cleared when this tab closes.</p>
 					{:else}
@@ -198,7 +292,11 @@
 						{/if}
 					</button>
 				</div>
-				
+
+				<div class="py-2 h-[3rem]">
+					<p class="text-sm opacity-80">Need a key? <a class="link link-secondary inline-flex items-center gap-1" href="https://www.alphavantage.co/support/#api-key" target="_blank" rel="noreferrer">Get one here <SquareArrowOutUpRight size={16} class="inline-block" /></a></p>
+				</div>
+
 				<div class="form-control w-full">
 					<label class="flex items-start gap-3 cursor-pointer">
 						<input type="checkbox" class="checkbox checkbox-primary mt-1" bind:checked={isPersistent} />
