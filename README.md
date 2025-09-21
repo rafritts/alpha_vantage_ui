@@ -29,14 +29,14 @@ This application uses client-side API key management with two storage options:
 
 1. **Session Storage (Default)**: Your API key is stored in the browser's session storage and is automatically cleared when you close the tab.
 
-2. **Encrypted Local Storage (Optional)**: You can choose to store your API key encrypted in local storage for persistence across browser sessions. The key is encrypted using a simple XOR cipher with a random salt.
+2. **Encrypted Local Storage (Optional)**: You can choose to store your API key encrypted in local storage for persistence across browser sessions. The key is encrypted using AES encryption from the crypto-js library.
 
 To set your API key, click the "API Key" button in the navigation bar and enter your key. You can toggle between session-only and persistent storage using the checkbox.
 
 ## Security Features
 
 - **HTML Sanitization**: All user inputs are sanitized using the native browser Sanitizer API to prevent XSS attacks
-- **Encrypted Storage**: API keys stored in localStorage are encrypted for additional security
+- **AES Encryption**: API keys stored in localStorage are encrypted using AES encryption for enhanced security
 - **Session-only Storage**: By default, API keys are stored in sessionStorage and cleared when the browser tab closes
 
 ## Available Endpoints
