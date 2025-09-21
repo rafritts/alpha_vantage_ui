@@ -1,6 +1,6 @@
 # Alpha Vantage UI (SvelteKit 5)
 
-A simple SvelteKit UI for Alpha Vantage Fundamental Data, starting with the Company Overview endpoint.
+A modern SvelteKit UI for Alpha Vantage financial data APIs, providing access to multiple endpoints including company fundamentals, stock quotes, financial statements, and earnings data.
 
 ## Prerequisites
 
@@ -15,22 +15,7 @@ A simple SvelteKit UI for Alpha Vantage Fundamental Data, starting with the Comp
 npm install
 ```
 
-2. Create your env file:
-
-```sh
-cp .env.example .env
-# then edit .env and set your key
-```
-
-Required var in `.env`:
-
-```ini
-ALPHA_VANTAGE_API_KEY=YOUR_KEY
-```
-
-This is read on the server only via `$env/dynamic/private` and is never exposed to the client.
-
-## Run
+2. Start the development server:
 
 ```sh
 npm run dev
@@ -38,19 +23,51 @@ npm run dev
 
 Dev server default: http://localhost:5173
 
+## API Key Management
+
+This application uses client-side API key management with two storage options:
+
+1. **Session Storage (Default)**: Your API key is stored in the browser's session storage and is automatically cleared when you close the tab.
+
+2. **Encrypted Local Storage (Optional)**: You can choose to store your API key encrypted in local storage for persistence across browser sessions. The key is encrypted using a simple XOR cipher with a random salt.
+
+To set your API key, click the "API Key" button in the navigation bar and enter your key. You can toggle between session-only and persistent storage using the checkbox.
+
+## Security Features
+
+- **HTML Sanitization**: All user inputs are sanitized using the native browser Sanitizer API to prevent XSS attacks
+- **Encrypted Storage**: API keys stored in localStorage are encrypted for additional security
+- **Session-only Storage**: By default, API keys are stored in sessionStorage and cleared when the browser tab closes
+
+## Available Endpoints
+
+The application provides UI for the following Alpha Vantage API endpoints:
+
+- **Company Overview**: Fundamental company data and financial ratios
+- **Global Quote**: Latest price and trading information
+- **Income Statement**: Quarterly and annual income statements
+- **Balance Sheet**: Quarterly and annual balance sheets
+- **Cash Flow**: Quarterly and annual cash flow statements
+- **News Sentiment**: Latest news articles and sentiment analysis
+- **Earnings History**: Historical EPS figures and surprises
+- **Earnings Estimates**: Analyst EPS estimates
+- **Earnings Call Transcript**: Earnings call transcripts with speaker information
+
 ## Usage
 
-- Open the app and enter a stock symbol (e.g., AAPL). Click "Fetch Overview".
-- The app calls the SvelteKit server route `GET /api/overview?symbol=...`, which securely proxies the request to Alpha Vantage using your server-side API key.
-- Results render as a grid of key/value fields. If rate limited, the error/Note from Alpha Vantage is shown.
+- Open the app and navigate to your desired endpoint
+- Enter a stock symbol (e.g., AAPL) in the search field
+- View the results in a clean, organized format
+- If rate limited, the error message from Alpha Vantage is displayed
 
-### API route
+## Architecture
 
-`src/routes/api/overview/+server.ts` implements the proxy to Alpha Vantage `function=OVERVIEW`.
+The application uses a client-side approach to API integration:
 
-### UI route
-
-`src/routes/+page.svelte` renders the input form, loading, error, and results grid.
+- Direct browser calls to Alpha Vantage API using the client's API key
+- Svelte stores for state management
+- Responsive UI with TailwindCSS and DaisyUI components
+- Dark/light theme support
 
 ## Build
 

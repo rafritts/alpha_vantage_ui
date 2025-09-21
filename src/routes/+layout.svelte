@@ -6,10 +6,13 @@
 	import { LayoutGrid } from 'lucide-svelte';
 	import { Eye, EyeOff } from 'lucide-svelte';
 	import { Menu, X } from 'lucide-svelte';
+	import { Copyright } from 'lucide-svelte';
 	import { SquareArrowOutUpRight } from 'lucide-svelte';
 	import { onMount } from 'svelte';
 	import { apiKeyStore, persistentStorage, isSessionOnly } from '$lib/stores/apiKey';
 	import { sanitizeInput } from '$lib/utils/sanitize';
+	import { FontAwesomeIcon } from '@fortawesome/svelte-fontawesome';
+	import { faGithub, faLinkedin, faXTwitter } from '@fortawesome/free-brands-svg-icons';
 
 	let { children } = $props();
 	
@@ -193,6 +196,15 @@
 						></path>
 					</svg>
 				</label>
+				<a
+					href="https://github.com/rafritts/alpha_vantage_ui"
+					target="_blank"
+					rel="noreferrer"
+					class="btn btn-circle h-12 min-h-0 w-12 p-0 btn-ghost flex items-center justify-center"
+					aria-label="GitHub Repository"
+				>
+					<FontAwesomeIcon icon={faGithub} style="height: 1.5rem; width: 1.5rem;" />
+				</a>
 			</div>
 		</div>
 	</div>
@@ -240,20 +252,32 @@
 				
 				<div class="flex items-center justify-between border-t border-base-300 pt-3">
 					<span class="text-sm">Theme</span>
-					<label class="swap swap-rotate">
-						<input
-							type="checkbox"
-							onchange={(e) => {
-								const checked = (e.currentTarget as HTMLInputElement).checked;
-								theme = checked ? 'dark' : 'light';
-								applyTheme(theme);
-							}}
-							checked={theme === 'dark'}
-							aria-label="Theme toggle"
-						/>
-						<svg class="swap-on h-6 w-6 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path></svg>
-						<svg class="swap-off h-6 w-6 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
-					</label>
+					<div class="flex items-center gap-3">
+						<label class="swap swap-rotate">
+							<input
+								type="checkbox"
+								onchange={(e) => {
+									const checked = (e.currentTarget as HTMLInputElement).checked;
+									theme = checked ? 'dark' : 'light';
+									applyTheme(theme);
+								}}
+								checked={theme === 'dark'}
+								aria-label="Theme toggle"
+							/>
+							<svg class="swap-on h-6 w-6 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path></svg>
+							<svg class="swap-off h-6 w-6 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+						</label>
+						<a
+							href="https://github.com/rafritts/alpha_vantage_ui"
+							target="_blank"
+							rel="noreferrer"
+							class="btn btn-circle h-12 min-h-0 w-12 p-0 btn-ghost flex items-center justify-center"
+							aria-label="GitHub Repository"
+							onclick={closeMobileMenu}
+						>
+							<FontAwesomeIcon icon={faGithub} style="height: 1.5rem; width: 1.5rem;" />
+						</a>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -332,7 +356,8 @@
 
 	<footer class="footer-center footer bg-base-100 p-4 text-base-content">
 		<aside>
-			<div class="mt-2 flex items-center justify-center gap-4">
+			<div class="flex items-center justify-center gap-3 text-sm opacity-80">
+				<!-- Tech Icons -->
 				<a
 					href="https://svelte.dev"
 					target="_blank"
@@ -343,7 +368,7 @@
 					<img
 						alt="Svelte logo"
 						src="https://upload.wikimedia.org/wikipedia/commons/1/1b/Svelte_Logo.svg"
-						class="h-6 w-auto opacity-80 transition-opacity hover:opacity-100"
+						class="h-5 w-auto transition-opacity hover:opacity-100"
 					/>
 				</a>
 				<a
@@ -356,7 +381,7 @@
 					<img
 						alt="Tailwind CSS logo"
 						src="https://upload.wikimedia.org/wikipedia/commons/d/d5/Tailwind_CSS_Logo.svg"
-						class="h-6 w-auto opacity-80 transition-opacity hover:opacity-100"
+						class="h-5 w-auto transition-opacity hover:opacity-100"
 					/>
 				</a>
 				<a
@@ -369,8 +394,45 @@
 					<img
 						alt="daisyUI logo"
 						src="https://img.daisyui.com/images/daisyui/mark.svg"
-						class="h-6 w-auto opacity-80 transition-opacity hover:opacity-100"
+						class="h-5 w-auto transition-opacity hover:opacity-100"
 					/>
+				</a>
+				
+				<!-- Divider -->
+				<span class="mx-1 text-xs opacity-50">|</span>
+				
+				<!-- Copyright -->
+				<div class="flex items-center">
+					<Copyright size={14} class="mr-1" />
+					<span>2025 </span>
+					<a 
+						href="https://www.linkedin.com/in/ryan-fritts-8697b864/" 
+						target="_blank" 
+						rel="noreferrer"
+						class="ml-1 link link-hover flex items-center"
+					>
+						Ryan Fritts
+					</a>
+				</div>
+				
+				<!-- Social Media Icons -->
+				<a
+					href="https://www.linkedin.com/in/ryan-fritts-8697b864/"
+					target="_blank"
+					rel="noreferrer"
+					class="btn btn-circle h-5 min-h-0 w-5 p-0 btn-ghost flex items-center justify-center"
+					aria-label="LinkedIn Profile"
+				>
+					<FontAwesomeIcon icon={faLinkedin} style="height: 0.75rem; width: 0.75rem;" />
+				</a>
+				<a
+					href="https://x.com/restless_api"
+					target="_blank"
+					rel="noreferrer"
+					class="btn btn-circle h-5 min-h-0 w-5 p-0 btn-ghost flex items-center justify-center"
+					aria-label="X (Twitter) Profile"
+				>
+					<FontAwesomeIcon icon={faXTwitter} style="height: 0.75rem; width: 0.75rem;" />
 				</a>
 			</div>
 		</aside>
