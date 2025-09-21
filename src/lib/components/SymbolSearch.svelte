@@ -3,6 +3,7 @@
 	import { symbolStore } from '$lib/stores/symbol';
 	import { searchSymbols, type SymbolSearchResult } from '$lib/client/alphaVantage';
 	import { clickOutside } from '$lib/actions/clickOutside';
+	import { sanitizeInput } from '$lib/utils/sanitize';
 
 	const dispatch = createEventDispatcher<{
 		search: { symbol: string };
@@ -56,6 +57,9 @@
 		selectedIndex = -1;
 		error = null;
 
+		// Sanitize the input value
+		inputValue = sanitizeInput(inputValue);
+
 		// Don't search if input is empty
 		if (!inputValue.trim()) {
 			searchResults = [];
@@ -97,8 +101,8 @@
 				// If no item is selected but there's input, use the input value
 				event.preventDefault();
 				
-				// Store the symbol temporarily
-				const symbol = inputValue.trim();
+				// Store the symbol temporarily and sanitize it
+				const symbol = sanitizeInput(inputValue.trim());
 				
 				// Reset the input field and clear search results
 				inputValue = '';
@@ -136,8 +140,8 @@
 	function selectResult(result: SymbolSearchResult) {
 		const symbol = result['1. symbol'];
 		
-		// Store the symbol temporarily
-		const selectedSymbol = symbol;
+		// Store the symbol temporarily and sanitize it
+		const selectedSymbol = sanitizeInput(symbol);
 		
 		// Reset the input field and clear search results
 		inputValue = '';
@@ -159,8 +163,8 @@
 	function handleSubmit(e: Event) {
 		e.preventDefault();
 		if (inputValue.trim()) {
-			// Store the symbol temporarily
-			const symbol = inputValue.trim();
+			// Store the symbol temporarily and sanitize it
+			const symbol = sanitizeInput(inputValue.trim());
 			
 			// Reset the input field and clear search results
 			inputValue = '';
@@ -206,6 +210,7 @@
 						}}
 						placeholder={placeholder}
 						autocomplete="off"
+						spellcheck={false}
 					/>
 					{#if isLoading}
 						<div class="absolute right-2 top-1/2 -translate-y-1/2">
@@ -219,7 +224,7 @@
 				<input
 					bind:this={input}
 					type="text"
-					class="input-bordered input w-full"
+					class="input-bordered input w-48"
 					bind:value={inputValue}
 					oninput={handleInput}
 					onkeydown={handleKeydown}
@@ -229,6 +234,7 @@
 					}}
 					placeholder={placeholder}
 					autocomplete="off"
+					spellcheck={false}
 				/>
 				{#if isLoading}
 					<div class="absolute right-2 top-1/2 -translate-y-1/2">

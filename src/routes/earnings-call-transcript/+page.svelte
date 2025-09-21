@@ -3,6 +3,7 @@
 	import { callAlphaVantageFromBrowser } from '$lib/client/alphaVantage';
 	import SymbolSearch from '$lib/components/SymbolSearch.svelte';
 	import BackButton from '$lib/components/BackButton.svelte';
+	import { sanitizeInput } from '$lib/utils/sanitize';
 
 	let loading = false;
 	let error: string | null = null;
@@ -30,6 +31,8 @@
 			error = 'Please enter a symbol';
 			return;
 		}
+		// Sanitize the quarter input
+		quarter = sanitizeInput(quarter);
 		if (!quarter.trim()) {
 			error = 'Please enter a quarter (e.g., 2024Q1)';
 			return;
@@ -105,8 +108,10 @@
 						name="quarter"
 						class="input-bordered input w-32"
 						bind:value={quarter}
+						oninput={() => { quarter = sanitizeInput(quarter); }}
 						placeholder="e.g. 2024Q1"
 						autocomplete="off"
+						spellcheck={false}
 					/>
 				</label>
 				<button type="button" class="btn btn-primary" disabled={loading} onclick={fetchTranscript}>

@@ -4,6 +4,7 @@
 	import { callAlphaVantageFromBrowser } from '$lib/client/alphaVantage';
 	import SymbolSearch from '$lib/components/SymbolSearch.svelte';
 	import BackButton from '$lib/components/BackButton.svelte';
+	import { sanitizeInput } from '$lib/utils/sanitize';
 	let symbol = 'AAPL';
 	let loading = false;
 	let error: string | null = null;

@@ -1,4 +1,5 @@
 import { readable, writable, type Writable } from 'svelte/store';
+import { sanitizeInput } from '$lib/utils/sanitize';
 
 const STORAGE_KEY = 'av_api_key';
 
@@ -19,7 +20,7 @@ function createSessionStorageBackedStore(): Writable<string> {
 		try {
 			if (typeof sessionStorage !== 'undefined') {
 				if (!val) sessionStorage.removeItem(STORAGE_KEY);
-				else sessionStorage.setItem(STORAGE_KEY, val);
+				else sessionStorage.setItem(STORAGE_KEY, sanitizeInput(val));
 			}
 		} catch {
 			// ignore

@@ -3,6 +3,7 @@
 	import { callAlphaVantageFromBrowser } from '$lib/client/alphaVantage';
 	import SymbolSearch from '$lib/components/SymbolSearch.svelte';
 	import BackButton from '$lib/components/BackButton.svelte';
+	import { sanitizeInput } from '$lib/utils/sanitize';
 	let symbol = 'AAPL';
 	let loading = false;
 	let error: string | null = null;
@@ -36,7 +37,8 @@
 
 	function filteredEntries() {
 		const entries = Object.entries(data || {});
-		const q = query.trim().toLowerCase();
+		// Sanitize the query input
+		const q = sanitizeInput(query.trim()).toLowerCase();
 		if (!q) return entries;
 		return entries.filter(
 			([k, v]) => k.toLowerCase().includes(q) || String(v).toLowerCase().includes(q)
@@ -269,7 +271,15 @@
 										clip-rule="evenodd"
 									/></svg
 								>
-								<input type="text" class="grow" placeholder="Filter fields..." bind:value={query} />
+								<input 
+								type="text" 
+								class="grow" 
+								placeholder="Filter fields..." 
+								bind:value={query}
+								on:input={() => { query = sanitizeInput(query); }}
+								spellcheck={false}
+								autocomplete="off" 
+							/>
 							</label>
 						</div>
 

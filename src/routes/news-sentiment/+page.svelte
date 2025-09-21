@@ -4,6 +4,7 @@
 	import { callAlphaVantageFromBrowser } from '$lib/client/alphaVantage';
 	import SymbolSearch from '$lib/components/SymbolSearch.svelte';
 	import BackButton from '$lib/components/BackButton.svelte';
+	import { sanitizeInput } from '$lib/utils/sanitize';
 	let tickers = 'AAPL';
 	let topics = '';
 	let time_from = '';
@@ -23,21 +24,21 @@
 		// Alpha Vantage expects 'tickers' parameter as a comma-separated list without spaces
 		// Format can include prefixes like CRYPTO: or FOREX:
 		if (tickers.trim()) {
-			// Remove spaces after commas to match expected format
-			params.tickers = tickers.split(',').map(t => t.trim()).join(',');
+			// Sanitize and remove spaces after commas to match expected format
+			params.tickers = tickers.split(',').map(t => sanitizeInput(t.trim())).join(',');
 		}
 		
 		// Alpha Vantage expects 'topics' parameter as a comma-separated list
 		if (topics.trim()) {
-			// Remove spaces after commas to match expected format
-			params.topics = topics.split(',').map(t => t.trim()).join(',');
+			// Sanitize and remove spaces after commas to match expected format
+			params.topics = topics.split(',').map(t => sanitizeInput(t.trim())).join(',');
 		}
 		
 		// Alpha Vantage expects 'time_from' parameter in YYYYMMDDTHHMM format
-		if (time_from.trim()) params.time_from = time_from.trim();
+		if (time_from.trim()) params.time_from = sanitizeInput(time_from.trim());
 		
 		// Alpha Vantage expects 'time_to' parameter in YYYYMMDDTHHMM format
-		if (time_to.trim()) params.time_to = time_to.trim();
+		if (time_to.trim()) params.time_to = sanitizeInput(time_to.trim());
 		
 		// Alpha Vantage expects 'sort' parameter as LATEST or EARLIEST
 		if (sort) params.sort = sort;
@@ -190,6 +191,9 @@
 						class="input-bordered input"
 						placeholder="e.g. technology,finance"
 						bind:value={topics}
+						oninput={() => { topics = sanitizeInput(topics); }}
+						spellcheck={false}
+						autocomplete="off"
 					/>
 				</label>
 				<label class="form-control">
@@ -201,7 +205,20 @@
 				</label>
 				<label class="form-control">
 					<div class="label"><span class="label-text font-semibold">Limit</span></div>
-					<input class="input-bordered input" type="number" min="1" max="200" bind:value={limit} />
+					<input 
+						class="input-bordered input" 
+						type="number" 
+						min="1" 
+						max="200" 
+						bind:value={limit} 
+						oninput={(e) => { 
+							// For number inputs, we don't need to sanitize as the browser handles it
+							// Just ensure it's a valid number or empty string
+							const val = (e.target as HTMLInputElement).value;
+							limit = val === '' ? '' : Number(val);
+						}}
+						spellcheck={false}
+					/>
 				</label>
 				<label class="form-control">
 					<div class="label">
@@ -211,6 +228,9 @@
 						class="input-bordered input"
 						placeholder="e.g. 20240101T0000"
 						bind:value={time_from}
+						oninput={() => { time_from = sanitizeInput(time_from); }}
+						spellcheck={false}
+						autocomplete="off"
 					/>
 				</label>
 				<label class="form-control">
@@ -221,6 +241,9 @@
 						class="input-bordered input"
 						placeholder="e.g. 20251231T2359"
 						bind:value={time_to}
+						oninput={() => { time_to = sanitizeInput(time_to); }}
+						spellcheck={false}
+						autocomplete="off"
 					/>
 				</label>
 

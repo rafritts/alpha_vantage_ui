@@ -3,6 +3,7 @@
 	import favicon from '$lib/assets/favicon.svg';
 	import { onMount } from 'svelte';
 	import { apiKeyStore } from '$lib/stores/apiKey';
+	import { sanitizeInput } from '$lib/utils/sanitize';
 
 	let { children } = $props();
 
@@ -20,7 +21,8 @@
 	}
 
 	function saveApiKey() {
-		apiKeyStore.set(tempKey.trim());
+		// Sanitize the API key before storing it
+		apiKeyStore.set(sanitizeInput(tempKey.trim()));
 		showApiModal = false;
 	}
 
