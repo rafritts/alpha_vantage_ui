@@ -1,7 +1,6 @@
-@import 'tailwindcss';
-@import '@tailwindcss/forms';
-@import '@tailwindcss/typography';
-@import 'daisyui';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 /* Smooth theme transition when toggling data-theme */
 @media (prefers-reduced-motion: no-preference) {
