@@ -1,6 +1,6 @@
 /**
  * Svelte action that dispatches a custom event when a click occurs outside of the element it's applied to.
- * 
+ *
  * Usage:
  * ```svelte
  * <div use:clickOutside={{ handler: handleClickOutside }}>...</div>

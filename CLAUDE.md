@@ -13,7 +13,6 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `npm run format` - Format code with Prettier
 - `npm run test` - Run all tests once
 - `npm run test:unit` - Run tests in watch mode
-- `npm run build` - Build for production (Vercel deploys automatically from git)
 
 ## Architecture Overview
 
@@ -24,17 +23,20 @@ This is a SvelteKit 5 application that provides a UI for Alpha Vantage API endpo
 **Client-Side API Integration**: The app uses direct browser calls to Alpha Vantage API (`src/lib/client/alphaVantage.ts`) rather than server-side proxy routes. API keys are managed through client-side storage with security features.
 
 **API Key Management**: Two storage options are available:
+
 - Session storage (default): API key is cleared when the browser tab closes
-- Encrypted local storage: API key is encrypted using XOR cipher with random salt for persistence across sessions
+- Encrypted local storage: API key is encrypted using AES encryption for persistence across sessions
 
 **Security Features**:
+
 - HTML sanitization using the native browser Sanitizer API for all user inputs
-- Encrypted storage for persistent API keys
+- AES encryption (crypto-js) for persistent API key storage
 - Clear visual indicators for storage type (session-only vs persistent)
 
 **Static Site Generation**: Configured with `@sveltejs/adapter-auto` for deployment to Vercel. All routes are pre-rendered for optimal performance.
 
 **State Management**:
+
 - API key storage via Svelte stores with storage options (`src/lib/stores/apiKey.ts`)
 - Symbol management through dedicated store (`src/lib/stores/symbol.ts`)
 
@@ -51,10 +53,11 @@ This is a SvelteKit 5 application that provides a UI for Alpha Vantage API endpo
 
 - **Framework**: SvelteKit 5 with TypeScript
 - **Styling**: TailwindCSS 4 + DaisyUI components
-- **Testing**: Vitest for unit tests
+- **Testing**: Vitest for unit tests (test files use `.spec.ts` suffix)
 - **Build**: Vite with TailwindCSS plugin
 - **Linting**: ESLint + Prettier with Svelte-specific configs
-- **Deployment**: Vercel
+- **Deployment**: Vercel (automatic from git)
+- **Icons**: Lucide-svelte and Font Awesome for UI icons
 
 ### API Integration Pattern
 
@@ -68,7 +71,7 @@ The `callAlphaVantageBrowser()` function in `src/lib/client/alphaVantage.ts` han
 ### Security Features
 
 - **HTML Sanitization**: All user inputs are sanitized using the native browser Sanitizer API
-- **Encryption**: API keys stored in localStorage are encrypted using a simple XOR cipher with random salt
+- **Encryption**: API keys stored in localStorage are encrypted using AES encryption (crypto-js library)
 - **Session-only Storage**: By default, API keys are stored in sessionStorage and cleared when the browser tab closes
 
 ### Development Notes

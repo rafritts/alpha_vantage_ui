@@ -15,14 +15,14 @@
 	import { faGithub, faLinkedin, faXTwitter } from '@fortawesome/free-brands-svg-icons';
 
 	let { children } = $props();
-	
+
 	// Mobile menu state
 	let mobileMenuOpen = $state(false);
-	
+
 	function toggleMobileMenu() {
 		mobileMenuOpen = !mobileMenuOpen;
 	}
-	
+
 	function closeMobileMenu() {
 		mobileMenuOpen = false;
 	}
@@ -46,7 +46,7 @@
 	function saveApiKey() {
 		// Update persistence preference first
 		persistentStorage.set(isPersistent);
-		
+
 		// Sanitize the API key before storing it
 		apiKeyStore.set(sanitizeInput(tempKey.trim()));
 		showApiModal = false;
@@ -115,11 +115,11 @@
 					<span class="inline sm:hidden">AV UI</span>
 				</a>
 			</div>
-			
+
 			<!-- Mobile menu toggle button -->
 			<div class="flex md:hidden">
-				<button 
-					class="btn btn-ghost btn-circle" 
+				<button
+					class="btn btn-circle btn-ghost"
 					onclick={toggleMobileMenu}
 					aria-label="Toggle mobile menu"
 				>
@@ -130,16 +130,16 @@
 					{/if}
 				</button>
 			</div>
-			
+
 			<!-- Desktop navigation -->
-			<div class="hidden md:flex flex-none items-center gap-2">
+			<div class="hidden flex-none items-center gap-2 md:flex">
 				<button class="btn btn-secondary" onclick={openApiKeyModal} aria-label="Set API Key">
 					<Key />
 					API Key
 					{#if $apiKeyStore}
 						<span class="ml-2 badge badge-sm badge-success">Set</span>
 						{#if $isSessionOnly}
-							<span class="ml-1 badge badge-xs badge-ghost">Session-only</span>
+							<span class="ml-1 badge badge-ghost badge-xs">Session-only</span>
 						{:else}
 							<span class="ml-1 badge badge-xs badge-info">AES Encrypted</span>
 						{/if}
@@ -151,7 +151,8 @@
 					class="btn btn-primary"
 					href="https://www.alphavantage.co/documentation/"
 					target="_blank"
-					rel="noreferrer">
+					rel="noreferrer"
+				>
 					<BookText />
 					AlphaVantage Docs</a
 				>
@@ -201,7 +202,7 @@
 					href="https://github.com/rafritts/alpha_vantage_ui"
 					target="_blank"
 					rel="noreferrer"
-					class="btn btn-circle h-12 min-h-0 w-12 p-0 btn-ghost flex items-center justify-center"
+					class="btn flex btn-circle h-12 min-h-0 w-12 items-center justify-center p-0 btn-ghost"
 					aria-label="GitHub Repository"
 				>
 					<FontAwesomeIcon icon={faGithub} style="height: 1.5rem; width: 1.5rem;" />
@@ -209,17 +210,17 @@
 			</div>
 		</div>
 	</div>
-	
+
 	<!-- Mobile menu (slide down) -->
 	{#if mobileMenuOpen}
-		<div class="md:hidden bg-base-100 shadow-md animate-slideDown">
-			<div class="container mx-auto px-4 py-3 flex flex-col gap-3">
-				<button 
-					class="btn btn-secondary w-full justify-between" 
+		<div class="animate-slideDown bg-base-100 shadow-md md:hidden">
+			<div class="container mx-auto flex flex-col gap-3 px-4 py-3">
+				<button
+					class="btn w-full justify-between btn-secondary"
 					onclick={() => {
 						openApiKeyModal();
 						closeMobileMenu();
-					}} 
+					}}
 					aria-label="Set API Key"
 				>
 					<span class="flex items-center gap-2">
@@ -230,7 +231,7 @@
 						{#if $apiKeyStore}
 							<span class="badge badge-sm badge-success">Set</span>
 							{#if $isSessionOnly}
-								<span class="badge badge-xs badge-ghost">Session-only</span>
+								<span class="badge badge-ghost badge-xs">Session-only</span>
 							{:else}
 								<span class="badge badge-xs badge-info">AES Encrypted</span>
 							{/if}
@@ -239,9 +240,9 @@
 						{/if}
 					</span>
 				</button>
-				
+
 				<a
-					class="btn btn-primary w-full justify-start"
+					class="btn w-full justify-start btn-primary"
 					href="https://www.alphavantage.co/documentation/"
 					target="_blank"
 					rel="noreferrer"
@@ -250,7 +251,7 @@
 					<BookText />
 					AlphaVantage Docs
 				</a>
-				
+
 				<div class="flex items-center justify-between border-t border-base-300 pt-3">
 					<span class="text-sm">Theme</span>
 					<div class="flex items-center gap-3">
@@ -265,14 +266,26 @@
 								checked={theme === 'dark'}
 								aria-label="Theme toggle"
 							/>
-							<svg class="swap-on h-6 w-6 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path></svg>
-							<svg class="swap-off h-6 w-6 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+							<svg
+								class="swap-on h-6 w-6 fill-current"
+								xmlns="http://www.w3.org/2000/svg"
+								viewBox="0 0 24 24"
+								><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path></svg
+							>
+							<svg
+								class="swap-off h-6 w-6 fill-current"
+								xmlns="http://www.w3.org/2000/svg"
+								viewBox="0 0 24 24"
+								><circle cx="12" cy="12" r="5" /><path
+									d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"
+								/></svg
+							>
 						</label>
 						<a
 							href="https://github.com/rafritts/alpha_vantage_ui"
 							target="_blank"
 							rel="noreferrer"
-							class="btn btn-circle h-12 min-h-0 w-12 p-0 btn-ghost flex items-center justify-center"
+							class="btn flex btn-circle h-12 min-h-0 w-12 items-center justify-center p-0 btn-ghost"
 							aria-label="GitHub Repository"
 							onclick={closeMobileMenu}
 						>
@@ -288,26 +301,31 @@
 		<dialog open class="modal">
 			<div class="modal-box">
 				<h3 class="text-lg font-bold">Alpha Vantage API Key</h3>
-				<div class="py-2 h-[4rem]">
+				<div class="h-[4rem] py-2">
 					{#if !isPersistent}
-						<p class="text-sm opacity-80">Your key is stored in session storage and cleared when this tab closes.</p>
+						<p class="text-sm opacity-80">
+							Your key is stored in session storage and cleared when this tab closes.
+						</p>
 					{:else}
-						<p class="text-sm opacity-80">Your key will be stored with AES encryption in local storage and persist across sessions. You can clear it at any time.</p>
+						<p class="text-sm opacity-80">
+							Your key will be stored with AES encryption in local storage and persist across
+							sessions. You can clear it at any time.
+						</p>
 					{/if}
 				</div>
-				<div class="mt-3 relative">
+				<div class="relative mt-3">
 					<input
 						type={showPassword ? 'text' : 'password'}
-						class="input-bordered input w-full mb-4 pr-10"
+						class="input-bordered input mb-4 w-full pr-10"
 						bind:value={tempKey}
 						placeholder="Enter your API key"
 						autocomplete="off"
 						spellcheck={false}
 					/>
-					<button 
-						type="button" 
-						class="absolute right-3 top-3 text-gray-500 hover:text-gray-700 transition-colors"
-						onclick={() => showPassword = !showPassword}
+					<button
+						type="button"
+						class="absolute top-3 right-3 text-gray-500 transition-colors hover:text-gray-700"
+						onclick={() => (showPassword = !showPassword)}
 						aria-label={showPassword ? 'Hide API key' : 'Show API key'}
 					>
 						{#if showPassword}
@@ -318,22 +336,34 @@
 					</button>
 				</div>
 
-				<div class="py-2 h-[3rem]">
-					<p class="text-sm opacity-80">Need a key? <a class="link link-secondary inline-flex items-center gap-1" href="https://www.alphavantage.co/support/#api-key" target="_blank" rel="noreferrer">Get one here <SquareArrowOutUpRight size={16} class="inline-block" /></a></p>
+				<div class="h-[3rem] py-2">
+					<p class="text-sm opacity-80">
+						Need a key? <a
+							class="inline-flex link items-center gap-1 link-secondary"
+							href="https://www.alphavantage.co/support/#api-key"
+							target="_blank"
+							rel="noreferrer"
+							>Get one here <SquareArrowOutUpRight size={16} class="inline-block" /></a
+						>
+					</p>
 				</div>
 
 				<div class="form-control w-full">
-					<label class="flex items-start gap-3 cursor-pointer">
-						<input type="checkbox" class="checkbox checkbox-primary mt-1" bind:checked={isPersistent} />
+					<label class="flex cursor-pointer items-start gap-3">
+						<input
+							type="checkbox"
+							class="checkbox mt-1 checkbox-primary"
+							bind:checked={isPersistent}
+						/>
 						<div class="flex flex-col">
 							<span class="label-text font-medium">Store API key permanently (AES encrypted)</span>
-							<span class="label-text text-xs opacity-70 mt-1">
+							<span class="label-text mt-1 text-xs opacity-70">
 								I understand there is a small risk of XSS attacks with persistent storage
 							</span>
 						</div>
 					</label>
 				</div>
-				
+
 				<div class="modal-action">
 					{#if $apiKeyStore}
 						<button class="btn btn-outline" onclick={clearApiKey}>Clear</button>
@@ -398,30 +428,30 @@
 						class="h-5 w-auto transition-opacity hover:opacity-100"
 					/>
 				</a>
-				
+
 				<!-- Divider -->
 				<span class="mx-1 text-xs opacity-50">|</span>
-				
+
 				<!-- Copyright -->
 				<div class="flex items-center">
 					<Copyright size={14} class="mr-1" />
 					<span>2025 </span>
-					<a 
-						href="https://www.linkedin.com/in/ryan-fritts-8697b864/" 
-						target="_blank" 
+					<a
+						href="https://www.linkedin.com/in/ryan-fritts-8697b864/"
+						target="_blank"
 						rel="noreferrer"
-						class="ml-1 link link-hover flex items-center"
+						class="ml-1 flex link items-center link-hover"
 					>
 						Ryan Fritts
 					</a>
 				</div>
-				
+
 				<!-- Social Media Icons -->
 				<a
 					href="https://www.linkedin.com/in/ryan-fritts-8697b864/"
 					target="_blank"
 					rel="noreferrer"
-					class="btn btn-circle h-5 min-h-0 w-5 p-0 btn-ghost flex items-center justify-center"
+					class="btn flex btn-circle h-5 min-h-0 w-5 items-center justify-center p-0 btn-ghost"
 					aria-label="LinkedIn Profile"
 				>
 					<FontAwesomeIcon icon={faLinkedin} style="height: 0.75rem; width: 0.75rem;" />
@@ -430,7 +460,7 @@
 					href="https://x.com/restless_api"
 					target="_blank"
 					rel="noreferrer"
-					class="btn btn-circle h-5 min-h-0 w-5 p-0 btn-ghost flex items-center justify-center"
+					class="btn flex btn-circle h-5 min-h-0 w-5 items-center justify-center p-0 btn-ghost"
 					aria-label="X (Twitter) Profile"
 				>
 					<FontAwesomeIcon icon={faXTwitter} style="height: 0.75rem; width: 0.75rem;" />

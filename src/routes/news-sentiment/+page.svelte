@@ -20,32 +20,38 @@
 		// Alpha Vantage expects parameters to be passed directly in the URL
 		// Example: https://www.alphavantage.co/query?function=NEWS_SENTIMENT&tickers=COIN,CRYPTO:BTC,FOREX:USD&time_from=20220410T0130&limit=1000&apikey=demo
 		const params: Record<string, string> = {};
-		
+
 		// Alpha Vantage expects 'tickers' parameter as a comma-separated list without spaces
 		// Format can include prefixes like CRYPTO: or FOREX:
 		if (tickers.trim()) {
 			// Sanitize and remove spaces after commas to match expected format
-			params.tickers = tickers.split(',').map(t => sanitizeInput(t.trim())).join(',');
+			params.tickers = tickers
+				.split(',')
+				.map((t) => sanitizeInput(t.trim()))
+				.join(',');
 		}
-		
+
 		// Alpha Vantage expects 'topics' parameter as a comma-separated list
 		if (topics.trim()) {
 			// Sanitize and remove spaces after commas to match expected format
-			params.topics = topics.split(',').map(t => sanitizeInput(t.trim())).join(',');
+			params.topics = topics
+				.split(',')
+				.map((t) => sanitizeInput(t.trim()))
+				.join(',');
 		}
-		
+
 		// Alpha Vantage expects 'time_from' parameter in YYYYMMDDTHHMM format
 		if (time_from.trim()) params.time_from = sanitizeInput(time_from.trim());
-		
+
 		// Alpha Vantage expects 'time_to' parameter in YYYYMMDDTHHMM format
 		if (time_to.trim()) params.time_to = sanitizeInput(time_to.trim());
-		
+
 		// Alpha Vantage expects 'sort' parameter as LATEST or EARLIEST
 		if (sort) params.sort = sort;
-		
+
 		// Alpha Vantage expects 'limit' parameter as a number
 		if (limit !== '' && Number(limit) > 0) params.limit = String(limit);
-		
+
 		return params;
 	}
 
@@ -60,13 +66,13 @@
 		if (single.length === 1) {
 			symbolStore.set(single[0].toUpperCase());
 		}
-		
+
 		// Check if we have required parameters
 		if (!tickers.trim() && !topics.trim()) {
 			error = 'Please provide at least one of: tickers or topics';
 			return;
 		}
-		
+
 		loading = true;
 		try {
 			// Build params for AV NEWS_SENTIMENT
@@ -99,12 +105,15 @@
 			tickers = $symbolStore;
 		}
 	});
-	
+
 	// Handle symbol selection from SymbolSearch
 	function handleSymbolSelect(event: CustomEvent) {
 		const symbol = event.detail.symbol;
 		// Add the symbol to the tickers if it's not already there
-		const tickerList = tickers.split(',').map(t => t.trim()).filter(Boolean);
+		const tickerList = tickers
+			.split(',')
+			.map((t) => t.trim())
+			.filter(Boolean);
 		if (!tickerList.includes(symbol)) {
 			if (tickerList.length > 0 && tickerList[0] !== '') {
 				// Join with comma but no space to match Alpha Vantage's expected format
@@ -114,17 +123,20 @@
 			}
 		}
 	}
-	
+
 	// Clear the tickers list
 	function clearTickers() {
 		tickers = '';
 	}
-	
+
 	// Remove a specific ticker from the list
 	function removeTicker(ticker: string) {
-		const tickerList = tickers.split(',').map(t => t.trim()).filter(Boolean);
+		const tickerList = tickers
+			.split(',')
+			.map((t) => t.trim())
+			.filter(Boolean);
 		// Join with comma but no space to match Alpha Vantage's expected format
-		tickers = tickerList.filter(t => t !== ticker).join(',');
+		tickers = tickerList.filter((t) => t !== ticker).join(',');
 	}
 </script>
 
@@ -139,43 +151,44 @@
 						<span class="label-text font-semibold">Tickers</span>
 					</div>
 					<div class="flex flex-col gap-2">
-						<SymbolSearch 
+						<SymbolSearch
 							showLabel={false}
 							showSubmitButton={false}
 							on:search={handleSymbolSelect}
 							placeholder="Search for symbols to add"
 							autoFocus={true}
 						/>
-						
+
 						{#if tickers}
-							<div class="flex flex-wrap gap-2 mt-2">
-								{#each tickers.split(',').map(t => t.trim()).filter(Boolean) as ticker}
-									<div class="badge badge-primary gap-1">
+							<div class="mt-2 flex flex-wrap gap-2">
+								{#each tickers
+									.split(',')
+									.map((t) => t.trim())
+									.filter(Boolean) as ticker}
+									<div class="badge gap-1 badge-primary">
 										{ticker}
-										<button 
-											type="button" 
-											class="btn btn-xs btn-circle btn-ghost" 
+										<button
+											type="button"
+											class="btn btn-circle btn-ghost btn-xs"
 											onclick={() => removeTicker(ticker)}
 										>
 											✕
 										</button>
 									</div>
 								{/each}
-								<button 
-									type="button" 
-									class="btn btn-xs btn-ghost" 
-									onclick={clearTickers}
-								>
+								<button type="button" class="btn btn-ghost btn-xs" onclick={clearTickers}>
 									Clear All
 								</button>
 							</div>
 						{:else}
 							<div class="text-sm text-base-content/70">Search and select symbols above</div>
 						{/if}
-						
-						<div class="text-xs text-base-content/50 mt-1">
+
+						<div class="mt-1 text-xs text-base-content/50">
 							<div>Selected tickers: <span class="font-mono">{tickers || 'none'}</span></div>
-							<div class="mt-1">Format: Standard tickers (AAPL), crypto (CRYPTO:BTC), or forex (FOREX:USD)</div>
+							<div class="mt-1">
+								Format: Standard tickers (AAPL), crypto (CRYPTO:BTC), or forex (FOREX:USD)
+							</div>
 						</div>
 					</div>
 				</div>
@@ -187,7 +200,9 @@
 						class="input-bordered input"
 						placeholder="e.g. technology,finance"
 						bind:value={topics}
-						oninput={() => { topics = sanitizeInput(topics); }}
+						oninput={() => {
+							topics = sanitizeInput(topics);
+						}}
 						spellcheck={false}
 						autocomplete="off"
 					/>
@@ -201,13 +216,13 @@
 				</label>
 				<label class="form-control">
 					<div class="label"><span class="label-text font-semibold">Limit</span></div>
-					<input 
-						class="input-bordered input" 
-						type="number" 
-						min="1" 
-						max="200" 
-						bind:value={limit} 
-						oninput={(e) => { 
+					<input
+						class="input-bordered input"
+						type="number"
+						min="1"
+						max="200"
+						bind:value={limit}
+						oninput={(e) => {
 							// For number inputs, we don't need to sanitize as the browser handles it
 							// Just ensure it's a valid number or empty string
 							const val = (e.target as HTMLInputElement).value;
@@ -224,7 +239,9 @@
 						class="input-bordered input"
 						placeholder="e.g. 20240101T0000"
 						bind:value={time_from}
-						oninput={() => { time_from = sanitizeInput(time_from); }}
+						oninput={() => {
+							time_from = sanitizeInput(time_from);
+						}}
 						spellcheck={false}
 						autocomplete="off"
 					/>
@@ -237,7 +254,9 @@
 						class="input-bordered input"
 						placeholder="e.g. 20251231T2359"
 						bind:value={time_to}
-						oninput={() => { time_to = sanitizeInput(time_to); }}
+						oninput={() => {
+							time_to = sanitizeInput(time_to);
+						}}
 						spellcheck={false}
 						autocomplete="off"
 					/>

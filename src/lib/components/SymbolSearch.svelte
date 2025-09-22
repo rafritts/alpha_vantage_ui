@@ -10,7 +10,7 @@
 	}>();
 
 	// Props
-	let { 
+	let {
 		placeholder = 'e.g. AAPL',
 		autoFocus = false,
 		showLabel = true,
@@ -100,17 +100,17 @@
 			} else if (inputValue.trim()) {
 				// If no item is selected but there's input, use the input value
 				event.preventDefault();
-				
+
 				// Store the symbol temporarily and sanitize it
 				const symbol = sanitizeInput(inputValue.trim());
-				
+
 				// Reset the input field and clear search results
 				inputValue = '';
 				searchResults = [];
-				
+
 				// Update the symbol store
 				$symbolStore = symbol;
-				
+
 				// Dispatch the search event
 				dispatch('search', { symbol });
 				showResults = false;
@@ -139,21 +139,21 @@
 
 	function selectResult(result: SymbolSearchResult) {
 		const symbol = result['1. symbol'];
-		
+
 		// Store the symbol temporarily and sanitize it
 		const selectedSymbol = sanitizeInput(symbol);
-		
+
 		// Reset the input field and clear search results
 		inputValue = '';
 		searchResults = [];
 		showResults = false;
-		
+
 		// Update the symbol store
 		$symbolStore = selectedSymbol;
-		
+
 		// Dispatch the search event when a result is selected
 		dispatch('search', { symbol: selectedSymbol });
-		
+
 		// Focus the input field again for the next entry
 		if (input) {
 			input.focus();
@@ -165,17 +165,17 @@
 		if (inputValue.trim()) {
 			// Store the symbol temporarily and sanitize it
 			const symbol = sanitizeInput(inputValue.trim());
-			
+
 			// Reset the input field and clear search results
 			inputValue = '';
 			searchResults = [];
-			
+
 			// Update the symbol store
 			$symbolStore = symbol;
-			
+
 			// Dispatch the search event
 			dispatch('search', { symbol });
-			
+
 			// Focus the input field again for the next entry
 			if (input) {
 				input.focus();
@@ -208,13 +208,13 @@
 							// Only show results if we have results AND the input field is not empty
 							if (searchResults.length > 0 && inputValue.trim()) showResults = true;
 						}}
-						placeholder={placeholder}
+						{placeholder}
 						autocomplete="off"
 						spellcheck={false}
 					/>
 					{#if isLoading}
-						<div class="absolute right-2 top-1/2 -translate-y-1/2">
-							<span class="loading loading-spinner loading-xs"></span>
+						<div class="absolute top-1/2 right-2 -translate-y-1/2">
+							<span class="loading loading-xs loading-spinner"></span>
 						</div>
 					{/if}
 				</div>
@@ -232,13 +232,13 @@
 						// Only show results if we have results AND the input field is not empty
 						if (searchResults.length > 0 && inputValue.trim()) showResults = true;
 					}}
-					placeholder={placeholder}
+					{placeholder}
 					autocomplete="off"
 					spellcheck={false}
 				/>
 				{#if isLoading}
-					<div class="absolute right-2 top-1/2 -translate-y-1/2">
-						<span class="loading loading-spinner loading-xs"></span>
+					<div class="absolute top-1/2 right-2 -translate-y-1/2">
+						<span class="loading loading-xs loading-spinner"></span>
 					</div>
 				{/if}
 			</div>

@@ -180,9 +180,9 @@
 
 	<div class="card bg-base-100 shadow">
 		<div class="card-body">
-			<SymbolSearch 
+			<SymbolSearch
 				submitButtonText={loading ? 'Loading...' : 'Fetch Overview'}
-				loading={loading}
+				{loading}
 				on:search={() => fetchOverview()}
 			/>
 
@@ -267,15 +267,17 @@
 										clip-rule="evenodd"
 									/></svg
 								>
-								<input 
-								type="text" 
-								class="grow" 
-								placeholder="Filter fields..." 
-								bind:value={query}
-								on:input={() => { query = sanitizeInput(query); }}
-								spellcheck={false}
-								autocomplete="off" 
-							/>
+								<input
+									type="text"
+									class="grow"
+									placeholder="Filter fields..."
+									bind:value={query}
+									on:input={() => {
+										query = sanitizeInput(query);
+									}}
+									spellcheck={false}
+									autocomplete="off"
+								/>
 							</label>
 						</div>
 

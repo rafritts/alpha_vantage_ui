@@ -9,6 +9,7 @@ export type AVFunction =
 	| 'NEWS_SENTIMENT'
 	| 'EARNINGS_CALL_TRANSCRIPT'
 	| 'SYMBOL_SEARCH'
+	| 'INSIDER_TRANSACTIONS'
 	| string;
 
 export type QueryParams = Record<string, string | number | boolean | undefined | null>;
@@ -20,7 +21,7 @@ export type AVResult<T = unknown> = {
 	text?: string;
 	upstreamNote?: string;
 	error?: string;
-}
+};
 
 const STORAGE_KEY = 'av_api_key';
 const LOCAL_STORAGE_KEY = 'av_api_key_persistent';
@@ -34,7 +35,7 @@ export function getApiKey(): string | null {
 				return decrypt(encryptedKey);
 			}
 		}
-		
+
 		// Fall back to sessionStorage
 		if (typeof sessionStorage !== 'undefined') {
 			return sessionStorage.getItem(STORAGE_KEY);

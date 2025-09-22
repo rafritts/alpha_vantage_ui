@@ -262,9 +262,9 @@
 	<div class="card bg-base-100 shadow">
 		<div class="card-body">
 			<div class="flex flex-wrap items-end gap-3">
-				<SymbolSearch 
+				<SymbolSearch
 					submitButtonText={loading ? 'Loading...' : 'Fetch Earnings'}
-					loading={loading}
+					{loading}
 					on:search={() => fetchEarnings()}
 				/>
 				{#if data}

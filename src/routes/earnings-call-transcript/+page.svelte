@@ -92,9 +92,7 @@
 	<div class="card bg-base-100 shadow">
 		<div class="card-body">
 			<div class="flex flex-wrap items-end gap-3">
-				<SymbolSearch 
-					showSubmitButton={false}
-				/>
+				<SymbolSearch showSubmitButton={false} />
 				<label class="form-control w-full sm:w-auto">
 					<div class="label">
 						<span class="label-text font-semibold">Quarter</span>
@@ -104,7 +102,9 @@
 						name="quarter"
 						class="input-bordered input w-32"
 						bind:value={quarter}
-						oninput={() => { quarter = sanitizeInput(quarter); }}
+						oninput={() => {
+							quarter = sanitizeInput(quarter);
+						}}
 						placeholder="e.g. 2024Q1"
 						autocomplete="off"
 						spellcheck={false}

@@ -11,7 +11,7 @@ export const persistentStorage = writable<boolean>(false);
 function createStorageBackedStore(): Writable<string> {
 	let initial = '';
 	let isPersistent = false;
-	
+
 	try {
 		// Check localStorage first (if it exists, user previously opted for persistence)
 		if (typeof localStorage !== 'undefined') {
@@ -21,7 +21,7 @@ function createStorageBackedStore(): Writable<string> {
 				isPersistent = true;
 			}
 		}
-		
+
 		// If not found in localStorage, check sessionStorage
 		if (!initial && typeof sessionStorage !== 'undefined') {
 			initial = sessionStorage.getItem(SESSION_STORAGE_KEY) ?? '';
@@ -32,7 +32,7 @@ function createStorageBackedStore(): Writable<string> {
 
 	// Set the initial persistent storage value
 	persistentStorage.set(isPersistent);
-	
+
 	const store = writable<string>(initial);
 
 	// Subscribe to both the API key and persistence preference
@@ -41,7 +41,7 @@ function createStorageBackedStore(): Writable<string> {
 	}).subscribe(({ value, persistent }) => {
 		try {
 			const sanitizedValue = sanitizeInput(value);
-			
+
 			// Clear both storages if no value
 			if (!value) {
 				if (typeof sessionStorage !== 'undefined') {
@@ -52,7 +52,7 @@ function createStorageBackedStore(): Writable<string> {
 				}
 				return;
 			}
-			
+
 			// Store in appropriate storage based on user preference
 			if (persistent) {
 				if (typeof localStorage !== 'undefined') {

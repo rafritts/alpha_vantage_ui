@@ -4,7 +4,9 @@
 
 <div class="container mx-auto px-4 py-8">
 	<div class="mb-12 text-center">
-		<p class="text-lg text-gray-500">Click on any of the cards below to view the API data. More cards coming soon.</p>
+		<p class="text-lg text-gray-500">
+			Click on any of the cards below to view the API data. More cards coming soon.
+		</p>
 	</div>
 
 	<div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -52,6 +54,11 @@
 			title="Earnings Call Transcript"
 			description="Access earnings call transcripts with speaker information and sentiment analysis."
 			href="/earnings-call-transcript"
+		/>
+		<Card
+			title="Insider Transactions"
+			description="View insider trading activities including acquisitions and disposals by company executives."
+			href="/insider-transactions"
 		/>
 	</div>
 </div>

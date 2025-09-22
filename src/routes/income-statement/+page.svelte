@@ -111,9 +111,9 @@
 	<div class="card bg-base-100 shadow">
 		<div class="card-body">
 			<div class="flex flex-wrap items-end gap-3">
-				<SymbolSearch 
+				<SymbolSearch
 					submitButtonText={loading ? 'Loading...' : 'Fetch Income Statement'}
-					loading={loading}
+					{loading}
 					on:search={() => fetchIncomeStatement()}
 				/>
 				{#if data}
@@ -189,7 +189,11 @@
 											<button
 												type="button"
 												class="btn btn-xs"
-												onclick={(e) => { e.preventDefault(); e.stopPropagation(); toggleExpanded('annual', i); }}
+												onclick={(e) => {
+													e.preventDefault();
+													e.stopPropagation();
+													toggleExpanded('annual', i);
+												}}
 												aria-expanded={expandedAnnualFlags[i]}
 											>
 												{expandedAnnualFlags[i] ? 'Show less' : `Show ${splits.hidden.length} more`}
@@ -239,7 +243,11 @@
 										<button
 											type="button"
 											class="btn btn-xs"
-											onclick={(e) => { e.preventDefault(); e.stopPropagation(); toggleExpanded('quarterly', i); }}
+											onclick={(e) => {
+												e.preventDefault();
+												e.stopPropagation();
+												toggleExpanded('quarterly', i);
+											}}
 											aria-expanded={expandedQuarterlyFlags[i]}
 										>
 											{expandedQuarterlyFlags[i]
